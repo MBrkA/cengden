@@ -14,14 +14,8 @@
 
 <script setup lang="ts">
 
-import {useRouter} from "vue-router";
 import AppLogo from "./AppLogo.vue";
 
-const router = useRouter();
-
-const handleLogoClick = () => {
-  router.push({ name: "home" });
-}
 </script>
 
 <style scoped>

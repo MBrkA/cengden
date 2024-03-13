@@ -128,7 +128,7 @@ const props = defineProps<{
   category?: string;
 }>();
 
-function getImgUrl(pic) {
+function getImgUrl(pic:any) {
   return `/src/assets/photos/${pic}.jpg`
 }
 

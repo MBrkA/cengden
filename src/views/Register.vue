@@ -8,27 +8,33 @@
     <el-col class="login-header" :span="24">
       <el-container class="login-container">
         <a class="login-title">Register</a>
-        <el-form>
+        <el-form v-if="!isSubmitSuccessful">
+          <el-form-item >
+            <el-input class="login-input" :class="errorNameClass" v-model="form.name" placeholder="Name"></el-input>
+          </el-form-item>
           <el-form-item >
             <el-input class="login-input" :class="errorEmailClass"  v-model="form.email" placeholder="E-mail"></el-input>
           </el-form-item>
           <el-form-item >
-            <el-input class="login-input" :class="errorEmailClass" v-model="form.emailAgain" placeholder="E-mail (Again)"></el-input>
+            <el-input class="login-input" :class="errorPhoneClass" v-model="form.phone" placeholder="Phone"></el-input>
           </el-form-item>
           <el-form-item >
             <el-input class="login-input" :class="errorPasswordClass" v-model="form.password" placeholder="Password" type="password"></el-input>
           </el-form-item>
           <el-form-item >
-            <el-input class="login-input" :class="errorPasswordClass" v-model="form.passwordAgain" placeholder="Password (Again)" type="password"></el-input>
+            <el-input class="login-input" :class="errorPasswordClass" v-model="passwordAgain" placeholder="Password (Again)" type="password"></el-input>
           </el-form-item>
           <p class="error-text" v-if="showError">
-            <span v-if="!validateEmail">E-mail is not valid or does not match</span>
+            <span v-if="!form.name">Name is empty</span>
+            <span v-if="!form.phone">Phone is empty</span>
+            <span v-if="!validateEmail">E-mail is not valid</span>
             <span v-if="!validatePassword">Password is not valid or does not match</span>
           </p>
           <el-form-item>
             <el-button class="login-input" type="primary" @click="submitForm">Register</el-button>
           </el-form-item>
         </el-form>
+        <p class="error-text" v-if="isSubmitSuccessful">Validation sent to your email address!</p>
       </el-container>
     </el-col>
 </el-row>
@@ -38,16 +44,19 @@
 <script setup lang="ts">
 import {computed, ref} from 'vue'
 import AppLogo from "../components/AppLogo.vue";
+import {useUserService} from "../service/user.service.ts";
 
 const form = ref({
+  name: "",
   email: "",
-  emailAgain: "",
+  phone: "",
   password: "",
-  passwordAgain: ""
 })
+const passwordAgain = ref("");
 
 const showError = ref(false);
 const isSubmitted = ref(false);
+const isSubmitSuccessful = ref(false);
 const errorPasswordClass = computed(() => {
   return {
     "error-input": isSubmitted.value && !validatePassword.value
@@ -58,25 +67,49 @@ const errorEmailClass = computed(() => {
     "error-input": isSubmitted.value && !validateEmail.value
   }
 })
+const errorNameClass = computed(() => {
+  return {
+    "error-input": isSubmitted.value && !form.value.name
+  }
+})
+const errorPhoneClass = computed(() => {
+  return {
+    "error-input": isSubmitted.value && !form.value.phone
+  }
+})
 
 const validateEmail = computed(() => {
   // ...@ceng.metu.edu.tr
   const emailRegex = new RegExp("^[a-zA-Z0-9._-]+@ceng.metu.edu.tr$")
-  return emailRegex.test(form.value.email) && form.value.email === form.value.emailAgain
+  return emailRegex.test(form.value.email)
 })
 
 const validatePassword = computed(() => {
-  return form.value.password && form.value.password === form.value.passwordAgain
+  return form.value.password && form.value.password === passwordAgain.value
 })
+
+const userService = useUserService();
 
 function submitForm() {
   isSubmitted.value = true;
   if (validateEmail.value && validatePassword.value) {
-    console.log("Form is valid")
+    userService.createUser({
+      type: "user",
+      isVerified: false,
+      ...form.value
+    })
+        .then(() => {
+          isSubmitSuccessful.value = true;
+        })
+        .catch(() => {
+          showError.value = true;
+        })
   } else {
     showError.value = true;
   }
 }
+
+
 
 </script>
 <style scoped>

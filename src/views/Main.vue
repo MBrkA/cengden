@@ -12,18 +12,12 @@
 <script setup lang="ts">
 import DataTable from "../components/DataTable.vue";
 import CategoryTable from "../components/CategoryTable.vue";
-import {useRouter} from "vue-router";
 import MainHeader from "../components/Header.vue";
 
 const props = defineProps<{
   brand?: string;
 }>();
 
-const router = useRouter();
-
-const handleLogoClick = () => {
-  router.push({ name: "home" });
-}
 </script>
 
 
