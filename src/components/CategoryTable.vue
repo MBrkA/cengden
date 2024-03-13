@@ -39,7 +39,8 @@ const handleBrandClick = ({row}: any) => {
 .category-table {
   //color: #a7d0bf;
   //--el-table-tr-bg-color: #6d028d;
-  --el-table-row-hover-bg-color: #ffe800;
+  //--el-table-row-hover-bg-color: #ffe800;
+  --el-table-row-hover-bg-color: #fffcdb;
   --el-table-current-row-bg-color: #9e02cc;
   --el-table-header-text-color: #292d2e;
   --el-table-header-bg-color: #e9e9e9;
