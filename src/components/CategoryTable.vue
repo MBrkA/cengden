@@ -2,7 +2,14 @@
 <template>
   <el-container class="category-table-container">
     <el-main>
-      <el-table :data="brands" style="width: 100%"
+      <el-tree
+          style="max-width: 600px"
+          :data="data"
+          :props="defaultProps"
+          default-expand-all
+          @node-click="handleNodeClick"
+      />
+      <el-table :data="brands" style="width: 100%;" v-if="false"
                 class="category-table">
         <el-table-column prop="brand" label="Brands" >
           <template #default="scope">
@@ -13,6 +20,7 @@
           </template>
         </el-table-column>
       </el-table>
+
     </el-main>
   </el-container>
 </template>
@@ -32,6 +40,31 @@ const handleBrandClick = ({row}: any) => {
   router.push({ name: "list-category", params: { brand: row.brand } });
 }
 
+const defaultProps = {
+  children: 'children',
+  label: 'label',
+}
+
+interface Tree {
+  label: string
+  children?: Tree[]
+}
+
+const handleNodeClick = (data: Tree) => {
+  router.push({ name: "list-category", params: { brand: data.label } });
+
+}
+
+
+
+const data: Tree[] = [
+  {
+    label: 'Vehicle',
+    children: [
+      {label: "Toyota"}, {label: "Honda"}, {label: "Tesla"}, {label: "Airstream"}, {label: "Ford"}
+    ],
+  },
+]
 </script>
 
 
