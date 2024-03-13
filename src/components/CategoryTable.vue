@@ -51,7 +51,9 @@ interface Tree {
 }
 
 const handleNodeClick = (data: Tree) => {
-  router.push({ name: "list-category", params: { brand: data.label } });
+  if (!data.children) {
+    router.push({ name: "list-category", params: { brand: data.label } });
+  }
 
 }
 
