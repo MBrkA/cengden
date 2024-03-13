@@ -3,20 +3,21 @@
   <el-container class="category-table-container">
     <el-main>
       <el-tree
+          v-if="false"
           style="max-width: 600px"
           :data="data"
           :props="defaultProps"
           default-expand-all
           @node-click="handleNodeClick"
       />
-      <el-table :data="brands" style="width: 100%;" v-if="false"
+      <el-table :data="brands" style="width: 100%;"
                 class="category-table">
-        <el-table-column prop="brand" label="Brands" >
+        <el-table-column prop="brand" label="Categories" >
           <template #default="scope">
             <a style="color: #606266;
                       cursor: pointer;"
                @click="handleBrandClick(scope)"
-            >{{scope.row.brand}}</a>
+            >{{scope.row.title}}</a>
           </template>
         </el-table-column>
       </el-table>
@@ -31,13 +32,17 @@ import {useRouter} from "vue-router";
 
 
 const router = useRouter();
+//"Vehicles","Computers","Phones","Private Lessons"
 
 const brands = ref([
-  {brand: "Toyota"}, {brand: "Honda"}, {brand: "Tesla"}, {brand: "Airstream"}, {brand: "Ford"}
+  {title: "Vehicles", value: "vehicle"},
+  {title: "Computers", value: "computer"},
+  {title: "Phones", value: "phones"},
+  {title: "Private Lessons", value: "lesson"}
 ])
 
 const handleBrandClick = ({row}: any) => {
-  router.push({ name: "list-category", params: { brand: row.brand } });
+  router.push({ name: "list-category", params: { brand: row.value } });
 }
 
 const defaultProps = {

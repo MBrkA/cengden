@@ -5,6 +5,8 @@
     </el-col>
     <el-col :span="15"></el-col>
     <el-col :span="5" class="main-header-login">
+      <router-link class="login-text
+        " to="/new-listing" v-if="false">New Listing</router-link>
       <el-container v-if="!userStore.user" style="justify-content: flex-end">
         <router-link class="login-text" to="/login">Login</router-link>
         <a class="login-line">|</a>
@@ -12,7 +14,7 @@
       </el-container>
       <el-container v-else style="justify-content: flex-end">
         <router-link class="login-text
-        " to="/profile">New Listing</router-link>
+        " to="/new-listing">New Listing</router-link>
         <a class="login-line">|</a>
         <router-link class="login-text
         " to="/profile">Profile</router-link>
