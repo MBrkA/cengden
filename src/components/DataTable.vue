@@ -2,10 +2,16 @@
 <template>
   <el-container class="data-table-container">
     <el-main>
-      <el-table class="data-table" :data="tableData" v-loading="tableLoading">
+      <el-table class="data-table" stripe :data="tableData" v-loading="tableLoading"
+                :cell-style="{ padding:'3px',height: '100px'}">
+        <el-table-column prop="image" label="" style="width: 100px">
+          <template #default="scope">
+            <img :src="getImgUrl(scope.row.image)" :alt="scope.row.title"  style="width: 100px"/>
+          </template>
+        </el-table-column>
         <el-table-column prop="model" label="Model" ></el-table-column>
         <el-table-column prop="brand" label="Brand" ></el-table-column>
-        <el-table-column prop="title" label="Title"></el-table-column>
+        <el-table-column prop="title" label="Title" ></el-table-column>
         <el-table-column prop="year" label="Year"></el-table-column>
         <el-table-column prop="mileage" label="Mileage"></el-table-column>
         <el-table-column prop="color" label="Color"></el-table-column>
@@ -41,7 +47,7 @@ const vehicles = ref([
     transmissionType: 'Automatic',
     mileage: '20,000 km',
     price: '$15,000',
-    image: 'image path',
+    image: 'corolla',
     description: 'good car'
   },
   {
@@ -56,7 +62,7 @@ const vehicles = ref([
     transmissionType: 'CVT',
     mileage: '25,000 km',
     price: '$12,500',
-    image: 'image path',
+    image: 'civic',
     description: 'good condition Civic with low mileage'
   },
   {
@@ -71,7 +77,7 @@ const vehicles = ref([
     transmissionType: 'Automatic',
     mileage: '10,000 km',
     price: '$80,000',
-    image: 'image path',
+    image: 'tesla',
     description: 'Luxurious electric sedan with autopilot feature',
     batteryCapacity: '100 kWh',
     range: '350 km'
@@ -88,7 +94,7 @@ const vehicles = ref([
     transmissionType: 'Manual',
     mileage: '15,000 miles',
     price: '$40,000',
-    image: 'image path',
+    image: 'airstream',
     description: 'Spacious travel trailer for outdoor adventures',
     bedCapacity: 'Sleeps 4',
     waterTankCapacity: '50 liters'
@@ -105,7 +111,7 @@ const vehicles = ref([
     transmissionType: 'Automatic',
     mileage: '30,000 km',
     price: '$35,000',
-    image: 'image path',
+    image: 'f150',
     description: 'Powerful pickup truck for various tasks',
     payloadCapacity: '1500 kg'
   }
@@ -122,16 +128,23 @@ const props = defineProps<{
   category?: string;
 }>();
 
+function getImgUrl(pic) {
+  return `/src/assets/photos/${pic}.jpg`
+}
+
 </script>
 
 <style scoped>
 .data-table-container {
   min-height: 80vh;
   border: 1px #dedede solid;
+  background-color: white;
 }
 .data-table {
   width: 100%;
   --el-table-header-text-color: #292d2e;
   --el-table-header-bg-color: #e9e9e9;
+  --el-fill-color-lighter: #f2f2f2;
+  cursor: pointer;
 }
 </style>

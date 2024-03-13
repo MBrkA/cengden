@@ -48,5 +48,6 @@ const handleBrandClick = ({row}: any) => {
  .category-table-container {
    border: 1px #dedede solid;
    margin-right: 10px;
+   background-color: white;
  }
 </style>
