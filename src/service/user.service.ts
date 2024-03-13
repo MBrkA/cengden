@@ -24,6 +24,11 @@ class UserService {
         return result.data;
     }
 
+    async login(email: string, password: string) {
+        const result = await this.http.post("/user/login", { email, password });
+        return result.data;
+    }
+
 }
 
 let GLOBAL_USER_SERVICE: UserService | null = null;

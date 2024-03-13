@@ -109,8 +109,6 @@ function submitForm() {
   }
 }
 
-
-
 </script>
 <style scoped>
 .login-header {

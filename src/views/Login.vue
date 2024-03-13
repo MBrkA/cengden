@@ -10,13 +10,13 @@
         <a class="login-title">Login</a>
         <el-form>
           <el-form-item >
-            <el-input class="login-input" v-model="form.username" placeholder="E-mail"></el-input>
+            <el-input class="login-input" v-model="form.email" placeholder="E-mail"></el-input>
           </el-form-item>
           <el-form-item >
-            <el-input class="login-input" v-model="form.password" placeholder="Password"></el-input>
+            <el-input class="login-input" v-model="form.password" type="password" placeholder="Password"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class="login-input" type="primary">Login</el-button>
+            <el-button class="login-input" type="primary" @click="submitForm">Login</el-button>
           </el-form-item>
         </el-form>
       </el-container>
@@ -28,11 +28,27 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import AppLogo from "../components/AppLogo.vue";
+import {useUserService} from "../service/user.service.ts";
+import {useUserStore} from "../store/user.store.ts";
+import {useRouter} from "vue-router";
+
+const userService = useUserService();
+const userStore = useUserStore();
+const router = useRouter();
 
 const form = ref({
-  username: "",
+  email: "",
   password: ""
 })
+
+function submitForm() {
+  userService.login(form.value.email,form.value.password).then((response) => {
+    if (response){
+      userStore.setUser(response);
+      router.push("/");
+    }
+  });
+}
 
 </script>
 <style scoped>
