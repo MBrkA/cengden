@@ -28,12 +28,22 @@
 </template>
 <script setup lang="ts">
 import MainHeader from "../components/Header.vue";
-import {ref} from "vue";
+import {onBeforeMount, ref} from "vue";
+import {useUserStore} from "../store/user.store.ts";
+import {useRouter} from "vue-router";
 
+const userStore = useUserStore();
+const router = useRouter();
 const form = ref({
   email: "",
   password: ""
 })
+
+onBeforeMount(async () => {
+  if (!userStore.user) {
+    await router.push("/");
+  }
+});
 
 </script>
 <style scoped>

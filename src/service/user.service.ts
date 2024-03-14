@@ -20,6 +20,7 @@ class UserService {
     }
 
     async updateUser(id: string, data: any) {
+        console.log(id, data)
         const result = await this.http.put(`/user/${id}`, data);
         return result.data;
     }
