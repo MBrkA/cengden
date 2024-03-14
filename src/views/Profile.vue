@@ -121,6 +121,7 @@ function submitPhone() {
   userService.updateUser(userStore.user._id, newUser)
       .then(() => {
         userStore.setUser({...userStore.user, phone: form.value.phone})
+        isPhoneSubmitted.value = true;
       });
 }
 
