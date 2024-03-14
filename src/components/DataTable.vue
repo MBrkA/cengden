@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import {computed, ref} from 'vue'
-
+// <img :src="getImgUrl(scope.row.image)" :alt="scope.row.title"  style="width: 100px"/>
 const vehicles = ref([
   {
     category: 'vehicle',
@@ -210,7 +210,7 @@ const props = defineProps<{
 }>();
 
 function getImgUrl(pic:any) {
-  return `/src/assets/photos/${pic}.jpg`
+  return `/photos/${pic}.jpg`
 }
 
 </script>
