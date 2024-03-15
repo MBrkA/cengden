@@ -15,10 +15,10 @@
         " to="/new-listing">New Listing</router-link>
         <a class="login-line">|</a>
         <router-link class="login-text
-        " to="#">My Listings</router-link>
+        " to="/my-listings">My Listings</router-link>
         <a class="login-line">|</a>
         <router-link class="login-text
-        " to="#">Favorites</router-link>
+        " to="/my-favorites">Favorites</router-link>
         <a class="login-line">|</a>
         <router-link class="login-text
         " to="/profile">Profile</router-link>
@@ -38,7 +38,7 @@ const userStore = useUserStore();
 const router = useRouter();
 
 function logout() {
-  userStore.setUser(null);
+  userStore.logout();
   router.push("/");
 }
 

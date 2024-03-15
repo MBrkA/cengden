@@ -80,7 +80,9 @@ function camelCaseToTitleCase(str: string) {
 function submitForm() {
 // Object.keys(form.value).length === keys.value.length-numOfLessons.value
   if (true) {
-    const data = {...form.value, lesson: lessons.value,user: userStore.user._id, isActive: true}
+    const data = {...form.value, lesson: lessons.value,user: userStore.user._id, isActive: true, createdAt: new Date(),
+      category: "lesson"
+    }
     listingService.createListing(data)
         .then(() => {
           showError.value = false;

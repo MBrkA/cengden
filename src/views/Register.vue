@@ -96,6 +96,8 @@ function submitForm() {
     userService.createUser({
       type: "user",
       isVerified: false,
+      favorites: [],
+      listings: [],
       ...form.value
     })
         .then(() => {

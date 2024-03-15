@@ -42,7 +42,7 @@ const brands = ref([
 ])
 
 const handleBrandClick = ({row}: any) => {
-  router.push({ name: "list-category", params: { brand: row.value } });
+  router.push({ name: "list-category", params: { category: row.value } });
 }
 
 const defaultProps = {
@@ -57,7 +57,7 @@ interface Tree {
 
 const handleNodeClick = (data: Tree) => {
   if (!data.children) {
-    router.push({ name: "list-category", params: { brand: data.label } });
+    router.push({ name: "list-category", params: { category: data.label } });
   }
 
 }

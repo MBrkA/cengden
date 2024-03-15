@@ -96,7 +96,10 @@ function camelCaseToTitleCase(str: string) {
 function submitForm() {
   //Object.keys(form.value).length === keys.value.length-1
   if (true) {
-    const data = {...form.value, storage: {...storageSpecs.value}, user: userStore.user._id, isActive: true}
+    const data = {...form.value, storage: {...storageSpecs.value},
+      user: userStore.user._id, isActive: true, createdAt: new Date(),
+      category: "computer"
+    }
     listingService.createListing(data)
         .then(() => {
           showError.value = false;

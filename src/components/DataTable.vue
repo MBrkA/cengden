@@ -2,20 +2,18 @@
 <template>
   <el-container class="data-table-container">
     <el-main>
-      <el-table class="data-table" stripe :data="tableData" v-loading="tableLoading"
-                :cell-style="{ padding:'3px',height: '100px'}">
+      <el-table class="data-table" stripe :data="tableData" v-loading="props.isLoading"
+                :cell-style="{ padding:'3px',height: '100px'}"
+                @row-click="handleRowClick"
+      >
         <el-table-column prop="image" label="" style="width: 100px">
           <template #default="scope">
-            <img :src="getImgUrl(scope.row.image)" :alt="scope.row.title"  style="width: 100px"/>
+            <img :src="scope.row.image" @error="$event.target.src='/photos/default.png'" :alt="scope.row.title"  style="width: 100px"/>
           </template>
-        </el-table-column>
-        <el-table-column prop="model" label="Model" ></el-table-column>
-        <el-table-column prop="brand" label="Brand" ></el-table-column>
-        <el-table-column prop="title" label="Title" ></el-table-column>
-        <el-table-column prop="year" label="Year"></el-table-column>
-        <el-table-column prop="mileage" label="Mileage"></el-table-column>
-        <el-table-column prop="color" label="Color"></el-table-column>
-        <el-table-column prop="price" label="Price"></el-table-column>
+        </el-table-column >
+        <el-table-column  prop="category" label="Category" ></el-table-column>
+        <el-table-column  prop="title" label="Title" ></el-table-column>
+        <el-table-column  prop="price" label="Price"></el-table-column>
       </el-table>
     </el-main>
   </el-container>
@@ -23,6 +21,7 @@
 
 <script setup lang="ts">
 import {computed, ref} from 'vue'
+import router from "../router";
 // <img :src="getImgUrl(scope.row.image)" :alt="scope.row.title"  style="width: 100px"/>
 const vehicles = ref([
   {
@@ -200,17 +199,19 @@ const vehicles = ref([
 const tableLoading = ref(false);
 const tableData = computed(() => {
   if (props.category) {
-    return vehicles.value.filter((vehicle) => vehicle.category === props.category);
+    return props.data.filter((vehicle) => vehicle.category === props.category);
   }
-  return vehicles.value;
+  return props.data;
 });
 
 const props = defineProps<{
   category?: string;
+  isLoading?: boolean;
+  data?: any;
 }>();
 
-function getImgUrl(pic:any) {
-  return `/photos/${pic}.jpg`
+function handleRowClick(row:any) {
+  router.push(`/listing/${row['_id']}`);
 }
 
 </script>
@@ -218,6 +219,7 @@ function getImgUrl(pic:any) {
 <style scoped>
 .data-table-container {
   min-height: 80vh;
+  width: 80vw;
   border: 1px #dedede solid;
   background-color: white;
 }

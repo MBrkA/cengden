@@ -5,6 +5,9 @@ import Register from "../views/Register.vue";
 import NewListing from "../views/NewListing.vue";
 import Profile from "../views/Profile.vue";
 import NewListingForm from "../views/NewListingForm.vue";
+import ListingDetails from "../views/ListingDetails.vue";
+import MyListings from "../views/MyListings.vue";
+import MyFavorites from "../views/MyFavorites.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,7 +18,7 @@ const router = createRouter({
       component: Main,
     },
     {
-      path: "/?category=:brand",
+      path: "/?category=:category",
       name: "list-category",
       component: Main,
       props: true,
@@ -35,6 +38,16 @@ const router = createRouter({
       name: "new-listing",
       component: NewListing
     },
+    {
+      path: "/my-listings",
+      name: "my-listings",
+      component: MyListings
+    },
+    {
+      path: "/my-favorites",
+      name: "my-favorites",
+      component: MyFavorites
+    },
 
     {
       path: "/new-listing/:category",
@@ -46,6 +59,12 @@ const router = createRouter({
       path: "/profile",
       name: "profile",
       component: Profile,
+    },
+    {
+        path: "/listing/:id",
+        name: "listing-details",
+        component: ListingDetails,
+        props: true,
     }
   ],
 });

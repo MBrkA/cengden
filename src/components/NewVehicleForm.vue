@@ -130,7 +130,9 @@ function resetAdditionalFields() {
 function submitForm() {
   // Object.keys(form.value).length === keys.value.length
   if (true) {
-    const data = {...form.value, ...additionalFieldValues.value,user: userStore.user._id, isActive: true}
+    const data = {...form.value, ...additionalFieldValues.value,user: userStore.user._id, isActive: true, createdAt: new Date(),
+      category: "vehicle"
+    }
     listingService.createListing(data)
         .then(() => {
           showError.value = false;

@@ -95,7 +95,9 @@ function camelCaseToTitleCase(str: string) {
 function submitForm() {
   // Object.keys(form.value).length+ camSpecs.value.length === keys.value.length+ cameraSpecificationsFields.length -1
   if (true) {
-    const data = {...form.value, cameraSpecifications: {...camSpecs.value},user: userStore.user._id, isActive: true}
+    const data = {...form.value, cameraSpecifications: {...camSpecs.value},user: userStore.user._id, isActive: true, createdAt: new Date(),
+      category: "phone"
+    }
     listingService.createListing(data)
         .then(() => {
           showError.value = false;

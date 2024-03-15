@@ -30,6 +30,15 @@ class UserService {
         return result.data;
     }
 
+    async addToFavorites(userId: string, listingId: string) {
+        const result = await this.http.put(`/user/${userId}/favorites/${listingId}`);
+        return result.data;
+    }
+
+    async removeFromFavorites(userId: string, listingId: string) {
+        const result = await this.http.delete(`/user/${userId}/favorites/${listingId}`);
+        return result.data;
+    }
 }
 
 let GLOBAL_USER_SERVICE: UserService | null = null;
