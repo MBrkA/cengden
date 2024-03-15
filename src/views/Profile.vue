@@ -161,7 +161,7 @@ onMounted(() => {
 .login-title {
   font-size: 20px;
   font-weight: bold;
-  font-family: "Arial", sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: black;
   margin-block: 20px;
   display: grid;
@@ -179,6 +179,7 @@ onMounted(() => {
   border: #dedede solid;
   border-width: 1px 0 1px 0;
   padding-block: 15px;
+  margin-bottom: 10px;
 }
 .password-update-error{
   border: 1px solid red;

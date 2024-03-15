@@ -21,3 +21,14 @@ export interface Lesson {
   image: string;
   description: string;
 }
+
+export const keysOfLesson = [
+    {name: "title", type: "string"},
+    {name: "tutorName", type: "string"},
+    {name: "lessons", type: "number"},
+    {name: "location", type: "string"},
+    {name: "duration", type: "string"},
+    {name: "price", type: "number"},
+    {name: "image", type: "string"},
+    {name: "description", type: "textarea"},
+];

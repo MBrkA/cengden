@@ -4,6 +4,7 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import NewListing from "../views/NewListing.vue";
 import Profile from "../views/Profile.vue";
+import NewListingForm from "../views/NewListingForm.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,13 +33,20 @@ const router = createRouter({
     {
       path: "/new-listing",
       name: "new-listing",
-      component: NewListing,
+      component: NewListing
+    },
+
+    {
+      path: "/new-listing/:category",
+      name: "new-listing-category",
+      component: NewListingForm,
+      props: true,
     },
     {
       path: "/profile",
       name: "profile",
       component: Profile,
-    },
+    }
   ],
 });
 
