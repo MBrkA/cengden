@@ -39,7 +39,7 @@
                       <el-button class="listing-detail-button" v-else type="primary" style="width: 200px" @click="deactivateListing">Deactivate</el-button>
                     </el-col>
                   </el-row>
-                  <el-row v-loading="isRemoving" v-if="userStore.user && userStore.user['_id'] === owner['_id']" class="profile-row" style="border:0;width: 20vw;">
+                  <el-row v-loading="isRemoving" v-if="userStore.user && (userStore.user['_id'] === owner['_id'] || userStore.user['type'] === 'admin')" class="profile-row" style="border:0;width: 20vw;">
                     <el-col class="profile-row-col" style="justify-content: center;" :span="24">
                       <el-button class="listing-detail-button" type="primary" style="width: 200px" @click="removeListing">Remove</el-button>
                     </el-col>
