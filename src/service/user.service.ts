@@ -39,6 +39,16 @@ class UserService {
         const result = await this.http.delete(`/user/${userId}/favorites/${listingId}`);
         return result.data;
     }
+
+    async addToListings(userId: string, listingId: string) {
+        const result = await this.http.put(`/user/${userId}/listings/${listingId}`);
+        return result.data;
+    }
+
+    async removeFromListings(userId: string, listingId: string) {
+        const result = await this.http.delete(`/user/${userId}/listings/${listingId}`);
+        return result.data;
+    }
 }
 
 let GLOBAL_USER_SERVICE: UserService | null = null;

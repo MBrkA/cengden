@@ -6,14 +6,18 @@
                 :cell-style="{ padding:'3px',height: '100px'}"
                 @row-click="handleRowClick"
       >
-        <el-table-column prop="image" label="" style="width: 100px">
+        <el-table-column width="120px"  prop="image" label="" style="width: 100px">
           <template #default="scope">
             <img :src="scope.row.image" @error="$event.target.src='/photos/default.png'" :alt="scope.row.title"  style="width: 100px"/>
           </template>
         </el-table-column >
-        <el-table-column  prop="category" label="Category" ></el-table-column>
+        <el-table-column width="100px" prop="category" label="Category" ></el-table-column>
         <el-table-column  prop="title" label="Title" ></el-table-column>
-        <el-table-column  prop="price" label="Price"></el-table-column>
+        <el-table-column width="200px"   prop="price" label="Price">
+          <template #default="scope">
+            {{new Intl.NumberFormat('tr-TR').format(scope.row.price)}} $
+          </template>
+        </el-table-column>
       </el-table>
     </el-main>
   </el-container>

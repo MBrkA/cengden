@@ -10,7 +10,7 @@
           default-expand-all
           @node-click="handleNodeClick"
       />
-      <el-table :data="brands" style="width: 100%;"
+      <el-table :data="categories" style="width: 100%;"
                 class="category-table">
         <el-table-column prop="brand" label="Categories" >
           <template #default="scope">
@@ -32,13 +32,12 @@ import {useRouter} from "vue-router";
 
 
 const router = useRouter();
-//"Vehicles","Computers","Phones","Private Lessons"
 
-const brands = ref([
-  {title: "Vehicles", value: "vehicle"},
-  {title: "Computers", value: "computer"},
-  {title: "Phones", value: "phones"},
-  {title: "Private Lessons", value: "lesson"}
+const categories = ref([
+  {title: "Vehicles", value: "Vehicle"},
+  {title: "Computers", value: "Computer"},
+  {title: "Phones", value: "Phones"},
+  {title: "Private Lessons", value: "Lesson"}
 ])
 
 const handleBrandClick = ({row}: any) => {

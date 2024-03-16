@@ -3,7 +3,7 @@
   <el-row style="margin-inline: 2rem">
     <el-col class="login-header" :span="24">
       <el-container class="login-container" v-loading="isLoading">
-        <a class="login-title">Details</a>
+        <a class="login-title">{{data['title']}}</a>
 
 
           <el-row>
@@ -51,7 +51,15 @@
 
                 <el-row class="profile-row">
                   <el-col class="profile-row-col" :span="12">{{camelCaseToTitleCase(key)}}</el-col>
-                  <el-col v-if="(typeof data[key]) !== 'object'" class="profile-row-col" :span="12">{{data[key]}}</el-col>
+                  <el-col v-if="(typeof data[key]) !== 'object'" class="profile-row-col" :span="12">
+
+                    <div v-if="key === 'price'">
+                      {{new Intl.NumberFormat('tr-TR').format(data[key])}} $
+                    </div>
+                    <div v-else>
+                      {{data[key]}}
+                    </div>
+                  </el-col>
                 </el-row>
                 <div v-if="(typeof data[key]) === 'object'" v-for="i in getKeys(data[key])">
                   <el-row class="profile-row">
@@ -95,7 +103,7 @@ const isAddingToFavorites = ref(false);
 const isActivating = ref(false);
 const keysOfData = computed(() => {
   return Object.keys(data.value).filter((key) => key !== "user" && key !== "description"
-  && key !== "isActive"&& key !== "additionalFields"&& key !== "image");
+  && key !== "isActive"&& key !== "additionalFields"&& key !== "image" && key !== "_id" && key != "title");
 })
 const isListingInFavorites = computed(() => {
   return userStore.user?.favorites.includes(data.value._id);

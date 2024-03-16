@@ -3,7 +3,7 @@
     <el-col class="login-header" :span="24">
       <el-container class="login-container">
         <p v-if="isSubmitSuccessful">Listing successful!</p>
-        <el-form v-else>
+        <el-form v-else v-loading="isLoading">
           <a class="login-title">New Phone Listing</a>
           <el-container style="flex-direction: column" v-for="key of keys">
 
@@ -16,14 +16,14 @@
                              style="width: 300px"
                              :placeholder="camelCaseToTitleCase(key.name)"
                   >
-                    <el-option :label="option" :value="option.toLowerCase()"
+                    <el-option :label="option" :value="option"
                                v-for="option in key.options"/>
                   </el-select>
                   <el-select v-else-if="key.type === 'select'" v-model="(form as any)[key.name]"
                              style="width: 300px"
                              :placeholder="camelCaseToTitleCase(key.name)"
                   >
-                    <el-option :label="option" :value="option.toLowerCase()"
+                    <el-option :label="option" :value="option"
                                v-for="option in brandModels[selectedBrand as keyof typeof brandModels]"/>
                   </el-select>
                   <el-input v-else-if="key.name !== 'cameraSpecifications'" style="width: 300px"  v-model="(form as any)[key.name]"
@@ -38,7 +38,7 @@
                                style="width: 300px"
                                :placeholder="camelCaseToTitleCase(i.name)"
                     >
-                      <el-option :label="option" :value="option.toLowerCase()"
+                      <el-option :label="option" :value="option"
                                  v-for="option in i.options"/>
                     </el-select>
                   </el-form-item>
@@ -66,12 +66,15 @@ import {computed, ref} from "vue";
 import {keysOfPhone, cameraSpecificationsFields, brandModels} from "../model/phone.model.ts";
 import {useUserStore} from "../store/user.store.ts";
 import {useListingService} from "../service/listing.service.ts";
+import {useUserService} from "../service/user.service.ts";
 
 const keys = ref(keysOfPhone);
 const isSubmitSuccessful = ref(false);
 const userStore = useUserStore();
 const listingService = useListingService();
+const userServices = useUserService();
 
+const isLoading = ref(false);
 const form = ref({})
 const camSpecs = ref({})
 const showError = ref(false);
@@ -83,7 +86,7 @@ const selectedBrand = computed(() => {
     delete form.value['model' as keyof typeof form.value]
   }
   const t = (form.value['brand' as keyof typeof form.value] ? form.value['brand' as keyof typeof form.value] : '')
-  return camelCaseToTitleCase(t);
+  return t;
 });
 
 function camelCaseToTitleCase(str: string) {
@@ -96,16 +99,27 @@ function submitForm() {
   // Object.keys(form.value).length+ camSpecs.value.length === keys.value.length+ cameraSpecificationsFields.length -1
   if (true) {
     const data = {...form.value, cameraSpecifications: {...camSpecs.value},user: userStore.user._id, isActive: true, createdAt: new Date(),
-      category: "phone"
+      category: "Phone"
     }
+    isLoading.value = true;
     listingService.createListing(data)
-        .then(() => {
-          showError.value = false;
-          isSubmitSuccessful.value = true;
+        .then((res) => {
+          userServices.addToListings(userStore.user._id, res['insertedId'])
+              .then(() => {
+                showError.value = false;
+                isSubmitSuccessful.value = true;
+              })
+              .catch((e) => {
+                showError.value = true;
+                console.log(e)
+              })
         })
         .catch((e) => {
           showError.value = true;
           console.log(e)
+        })
+        .finally(() => {
+          isLoading.value = false;
         })
   } else {
     showError.value = true;

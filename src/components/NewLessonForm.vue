@@ -3,7 +3,7 @@
     <el-col class="login-header" :span="24">
       <el-container class="login-container">
         <p v-if="isSubmitSuccessful">Listing successful!</p>
-        <el-form v-else>
+        <el-form v-else v-loading="isLoading">
           <a class="login-title">New Private Lesson Listing</a>
           <el-container style="flex-direction: column" v-for="key of keys">
 
@@ -52,13 +52,15 @@ import {computed, ref} from "vue";
 import {keysOfLesson} from "../model/lesson.model.ts";
 import {useUserStore} from "../store/user.store.ts";
 import {useListingService} from "../service/listing.service.ts";
+import {useUserService} from "../service/user.service.ts";
 
 const keys = ref(keysOfLesson);
 const isSubmitSuccessful = ref(false);
 const userStore = useUserStore();
 const listingService = useListingService();
+const userServices = useUserService();
 
-
+const isLoading = ref(false);
 const form:any = ref({})
 const lessons = ref([])
 const showError = ref(false);
@@ -81,16 +83,28 @@ function submitForm() {
 // Object.keys(form.value).length === keys.value.length-numOfLessons.value
   if (true) {
     const data = {...form.value, lesson: lessons.value,user: userStore.user._id, isActive: true, createdAt: new Date(),
-      category: "lesson"
+      category: "Lesson"
     }
+    isLoading.value = true;
     listingService.createListing(data)
-        .then(() => {
-          showError.value = false;
-          isSubmitSuccessful.value = true;
+        .then((res) => {
+          console.log(res)
+          userServices.addToListings(userStore.user._id, res['insertedId'])
+              .then(() => {
+                showError.value = false;
+                isSubmitSuccessful.value = true;
+              })
+              .catch((e) => {
+                showError.value = true;
+                console.log(e)
+              })
         })
         .catch((e) => {
           showError.value = true;
           console.log(e)
+        })
+        .finally(() => {
+          isLoading.value = false;
         })
   } else {
     showError.value = true;

@@ -29,7 +29,6 @@ onMounted(() => {
   listingService.getAllListings().then((res) => {
     data.value = res;
     isLoading.value = false;
-    console.log(data.value);
   }).catch((err) => {
     console.log(err);
   });

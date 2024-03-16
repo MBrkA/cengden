@@ -18,24 +18,30 @@ import {useUserStore} from "../store/user.store.ts";
 import {useRouter} from "vue-router";
 import DataTable from "../components/DataTable.vue";
 import {useListingService} from "../service/listing.service.ts";
+import {useUserService} from "../service/user.service.ts";
 
 const userStore = useUserStore();
 const router = useRouter();
 
 
 const listingService = useListingService();
+const userService = useUserService();
 
 const data = ref([]);
 const isLoading = ref(true);
 
 onMounted(() => {
-  listingService.getListingsByArray(userStore.user['favorites']).then((res) => {
-    data.value = res;
-    isLoading.value = false;
-    console.log(data.value);
-  }).catch((err) => {
-    console.log(err);
-  });
+
+  userService.getUserById(userStore.user['_id']).then((res) => {
+    listingService.getListingsByArray(res['favorites']).then((res) => {
+      data.value = res;
+      isLoading.value = false;
+    }).catch((err) => {
+      console.log(err);
+    });
+  })
+
+
 })
 
 onBeforeMount(async () => {
