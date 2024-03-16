@@ -39,6 +39,10 @@ class ListingService {
         return result.data;
     }
 
+    async deleteListing(id: string) {
+        const result = await this.http.delete(`/listing/${id}`);
+        return result.data;
+    }
 
 }
 

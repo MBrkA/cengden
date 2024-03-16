@@ -56,6 +56,12 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/update-listing/:category/:updateId",
+      name: "update-listing-category",
+      component: NewListingForm,
+      props: true,
+    },
+    {
       path: "/profile",
       name: "profile",
       component: Profile,

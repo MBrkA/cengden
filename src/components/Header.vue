@@ -49,7 +49,7 @@ function logout() {
 .main-header {
   background-color: #3f475f;
   height: 50px;
-  margin-block: 10px;
+  margin-bottom: 10px;
   padding-inline: 2rem;
   justify-content: space-between;
 }

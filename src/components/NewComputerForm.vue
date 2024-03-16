@@ -62,11 +62,28 @@
 
 </template>
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {keysOfComputer, brandModels, storageFields} from "../model/computer.model.ts";
 import {useUserStore} from "../store/user.store.ts";
 import {useListingService} from "../service/listing.service.ts";
 import {useUserService} from "../service/user.service.ts";
+import router from "../router";
+
+const props = defineProps<{
+  updateId?: any;
+}>();
+
+onMounted(() => {
+  if (props.updateId) {
+    listingService.getListingById(props.updateId).then((res) => {
+      form.value = res;
+      previousBrand.value = res.brand;
+      storageSpecs.value = res.storage;
+    }).catch((err) => {
+      router.back();
+    });
+  }
+})
 
 const userStore = useUserStore();
 const listingService = useListingService();
@@ -97,8 +114,23 @@ function camelCaseToTitleCase(str: string) {
 }
 
 function submitForm() {
-  //Object.keys(form.value).length === keys.value.length-1
-  if (true) {
+  if (props.updateId) {
+    const data = {...form.value, storage: {...storageSpecs.value}}
+    delete data._id;
+    isLoading.value = true;
+    listingService.updateListing(props.updateId, data)
+        .then(() => {
+          showError.value = false;
+          isSubmitSuccessful.value = true;
+        })
+        .catch((e) => {
+          showError.value = true;
+          console.log(e)
+        })
+        .finally(() => {
+          isLoading.value = false;
+        })
+  } else {
     const data = {...form.value, storage: {...storageSpecs.value},
       user: userStore.user._id, isActive: true, createdAt: new Date(),
       category: "Computer"
@@ -123,8 +155,6 @@ function submitForm() {
         .finally(() => {
           isLoading.value = false;
         })
-  } else {
-    showError.value = true;
   }
 }
 

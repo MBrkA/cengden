@@ -62,11 +62,28 @@
 
 </template>
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {keysOfPhone, cameraSpecificationsFields, brandModels} from "../model/phone.model.ts";
 import {useUserStore} from "../store/user.store.ts";
 import {useListingService} from "../service/listing.service.ts";
 import {useUserService} from "../service/user.service.ts";
+import router from "../router";
+
+const props = defineProps<{
+  updateId?: any;
+}>();
+
+onMounted(() => {
+  if (props.updateId) {
+    listingService.getListingById(props.updateId).then((res) => {
+      form.value = res;
+      previousBrand.value = res.brand;
+      camSpecs.value = res.cameraSpecifications;
+    }).catch((err) => {
+      router.back();
+    });
+  }
+})
 
 const keys = ref(keysOfPhone);
 const isSubmitSuccessful = ref(false);
@@ -96,8 +113,23 @@ function camelCaseToTitleCase(str: string) {
 }
 
 function submitForm() {
-  // Object.keys(form.value).length+ camSpecs.value.length === keys.value.length+ cameraSpecificationsFields.length -1
-  if (true) {
+  if (props.updateId) {
+    const data = {...form.value, cameraSpecifications: {...camSpecs.value}}
+    delete data._id;
+    isLoading.value = true;
+    listingService.updateListing(props.updateId, data)
+        .then(() => {
+          showError.value = false;
+          isSubmitSuccessful.value = true;
+        })
+        .catch((e) => {
+          showError.value = true;
+          console.log(e)
+        })
+        .finally(() => {
+          isLoading.value = false;
+        })
+  } else {
     const data = {...form.value, cameraSpecifications: {...camSpecs.value},user: userStore.user._id, isActive: true, createdAt: new Date(),
       category: "Phone"
     }
@@ -121,8 +153,6 @@ function submitForm() {
         .finally(() => {
           isLoading.value = false;
         })
-  } else {
-    showError.value = true;
   }
 }
 

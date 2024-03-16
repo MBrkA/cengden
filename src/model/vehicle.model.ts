@@ -41,7 +41,7 @@ export const keysOfVehicle = [
     {name: "model", type: "select"},
     {name: "year", type: "number"},
     {name: "color", type: "select", options: ["Black", "White", "Silver", "Gray", "Red", "Blue", "Brown", "Green", "Yellow", "Orange", "Purple", "Pink"]},
-    {name: "engineDisplacement", type: "select", options: ["1.0L", "1.2L", "1.4L", "1.6L", "1.8L", "2.0L", "2.2L", "2.4L", "2.6L", "2.8L", "3.0L", "3.2L", "3.4L", "3.6L", "3.8L", "4.0L", "4.2L", "4.4L", "4.6L", "4.8L", "5.0L", "5.2L", "5.4L", "5.6L", "5.8L", "6.0L", "6.2L", "6.4L", "6.6L", "6.8L", "7.0L", "7.2L", "7.4L", "7.6L", "7.8L", "8.0L"]},
+    {name: "engineDisplacement", type: "select", options: ["N/A","1.0L", "1.2L", "1.4L", "1.6L", "1.8L", "2.0L", "2.2L", "2.4L", "2.6L", "2.8L", "3.0L", "3.2L", "3.4L", "3.6L", "3.8L", "4.0L", "4.2L", "4.4L", "4.6L", "4.8L", "5.0L", "5.2L", "5.4L", "5.6L", "5.8L", "6.0L", "6.2L", "6.4L", "6.6L", "6.8L", "7.0L", "7.2L", "7.4L", "7.6L", "7.8L", "8.0L"]},
     {name: "fuelType", type: "select", options: ["Petrol", "Diesel", "Electric"]},
     {name: "transmissionType", type: "select", options: ["Automatic", "Manual"]},
     {name: "mileage", type: "number"},

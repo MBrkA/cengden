@@ -1,9 +1,9 @@
 <template>
   <main-header />
-  <new-vehicle-form category="vehicle"  v-if="props.category === 'vehicle'"/>
-  <new-lesson-form  v-if="props.category === 'lesson'"/>
-  <new-phone-form  v-if="props.category === 'phone'"/>
-  <new-computer-form  v-if="props.category === 'computer'"/>
+  <new-vehicle-form :updateId="props.updateId"  v-if="props.category === 'vehicle'"/>
+  <new-lesson-form :updateId="props.updateId" v-if="props.category === 'lesson'"/>
+  <new-phone-form :updateId="props.updateId" v-if="props.category === 'phone'"/>
+  <new-computer-form :updateId="props.updateId" v-if="props.category === 'computer'"/>
 
 </template>
 <script setup lang="ts">
@@ -18,6 +18,7 @@
 
   const props = defineProps<{
     category: string;
+    updateId?: any;
   }>()
 
   const userStore = useUserStore();

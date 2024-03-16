@@ -3,89 +3,101 @@
   <el-row style="margin-inline: 2rem">
     <el-col class="login-header" :span="24">
       <el-container class="login-container" v-loading="isLoading">
-        <a class="login-title">{{data['title']}}</a>
+
+        <p v-if="isDeleteSuccessful">Listing removed successfully!</p>
+        <div v-else>
+          <a class="login-title">{{data['title']}}</a>
+
+            <el-row>
+              <el-col :span="12">
+                <el-container style="flex-direction: column">
+
+                  <el-row class="profile-row" style=" border: 0;   display: flex;
+                      justify-content: center;width: 20vw;">
+                    <img :src="data['image']" @error="$event.target.src='/photos/default.png'" alt="test"  style="width: 80%"/>
+                  </el-row>
+                  <el-row class="profile-row" style="width: 20vw;">
+                    <el-col class="profile-row-col" style="display: flex;justify-content: center" :span="24">Owner</el-col>
+                  </el-row>
+                  <el-row class="profile-row" style="width: 20vw;">
+                    <el-col class="profile-row-col" :span="8">Name</el-col>
+                    <el-col class="profile-row-col" :span="16">{{owner['name']}}</el-col>
+                  </el-row>
+                  <el-row class="profile-row" style="width: 20vw;">
+                    <el-col class="profile-row-col" :span="8">Phone</el-col>
+                    <el-col class="profile-row-col" :span="16">{{owner['phone']}}</el-col>
+                  </el-row>
 
 
-          <el-row>
-            <el-col :span="12">
-              <el-container style="flex-direction: column">
+                  <el-row v-if="userStore.user && userStore.user['_id'] === owner['_id']" class="profile-row" style="width: 20vw;">
+                    <el-col class="profile-row-col" :span="8">Is Active</el-col>
+                    <el-col class="profile-row-col" :span="16">{{data['isActive'] ? 'Yes':'No'}}</el-col>
+                  </el-row>
+                  <el-row v-loading="isActivating" v-if="userStore.user && userStore.user['_id'] === owner['_id']" class="profile-row" style="border:0;width: 20vw;">
+                    <el-col class="profile-row-col" style="justify-content: center;" :span="24">
+                      <el-button class="listing-detail-button" v-if="!data['isActive']" type="primary" style="width: 200px" @click="activateListing">Activate</el-button>
+                      <el-button class="listing-detail-button" v-else type="primary" style="width: 200px" @click="deactivateListing">Deactivate</el-button>
+                    </el-col>
+                  </el-row>
+                  <el-row v-loading="isRemoving" v-if="userStore.user && userStore.user['_id'] === owner['_id']" class="profile-row" style="border:0;width: 20vw;">
+                    <el-col class="profile-row-col" style="justify-content: center;" :span="24">
+                      <el-button class="listing-detail-button" type="primary" style="width: 200px" @click="removeListing">Remove</el-button>
+                    </el-col>
+                  </el-row>
+                  <el-row v-if="userStore.user && userStore.user['_id'] === owner['_id']" class="profile-row" style="border:0;width: 20vw;">
+                    <el-col class="profile-row-col" style="justify-content: center;" :span="24">
+                      <el-button class="listing-detail-button" type="primary" style="width: 200px" @click="updateListing">Update</el-button>
+                    </el-col>
+                  </el-row>
 
-                <el-row class="profile-row" style=" border: 0;   display: flex;
-                    justify-content: center;width: 20vw;">
-                  <img :src="data['image']" @error="$event.target.src='/photos/default.png'" alt="test"  style="width: 80%"/>
-                </el-row>
-                <el-row class="profile-row" style="width: 20vw;">
-                  <el-col class="profile-row-col" style="display: flex;justify-content: center" :span="24">Owner</el-col>
-                </el-row>
-                <el-row class="profile-row" style="width: 20vw;">
-                  <el-col class="profile-row-col" :span="8">Name</el-col>
-                  <el-col class="profile-row-col" :span="16">{{owner['name']}}</el-col>
-                </el-row>
-                <el-row class="profile-row" style="width: 20vw;">
-                  <el-col class="profile-row-col" :span="8">Phone</el-col>
-                  <el-col class="profile-row-col" :span="16">{{owner['phone']}}</el-col>
-                </el-row>
+                  <el-row v-loading="isAddingToFavorites" v-if="userStore.user && userStore.user['_id'] !== owner['_id']" class="profile-row" style="border:0;width: 20vw;">
+                    <el-col class="profile-row-col" style="justify-content: center;" :span="24">
+                      <el-button class="listing-detail-button" v-if="!isListingInFavorites" type="primary" style="width: 200px" @click="addListingToFavorites">Add to Favorites</el-button>
+                      <el-button class="listing-detail-button" v-else type="primary" style="width: 200px" @click="removeListingToFavorites">Remove from Favorites</el-button>
+                    </el-col>
+                  </el-row>
+                </el-container>
+              </el-col>
+              <el-col :span="12">
+                <el-container v-for="key in keysOfData" style="flex-direction: column">
 
-
-                <el-row v-if="userStore.user && userStore.user['_id'] === owner['_id']" class="profile-row" style="width: 20vw;">
-                  <el-col class="profile-row-col" :span="8">Is Active</el-col>
-                  <el-col class="profile-row-col" :span="16">{{data['isActive'] ? 'Yes':'No'}}</el-col>
-                </el-row>
-                <el-row v-loading="isActivating" v-if="userStore.user && userStore.user['_id'] === owner['_id']" class="profile-row" style="border:0;width: 20vw;">
-                  <el-col class="profile-row-col" style="justify-content: center;" :span="24">
-                    <el-button class="listing-detail-button" v-if="!data['isActive']" type="primary" style="width: 200px" @click="activateListing">Activate</el-button>
-                    <el-button class="listing-detail-button" v-else type="primary" style="width: 200px" @click="deactivateListing">Deactivate</el-button>
-                  </el-col>
-                </el-row>
-
-                <el-row v-loading="isAddingToFavorites" v-if="userStore.user && userStore.user['_id'] !== owner['_id']" class="profile-row" style="border:0;width: 20vw;">
-                  <el-col class="profile-row-col" style="justify-content: center;" :span="24">
-                    <el-button class="listing-detail-button" v-if="!isListingInFavorites" type="primary" style="width: 200px" @click="addListingToFavorites">Add to Favorites</el-button>
-                    <el-button class="listing-detail-button" v-else type="primary" style="width: 200px" @click="removeListingToFavorites">Remove from Favorites</el-button>
-                  </el-col>
-                </el-row>
-              </el-container>
-            </el-col>
-            <el-col :span="12">
-              <el-container v-for="key in keysOfData" style="flex-direction: column">
-
-                <el-row class="profile-row">
-                  <el-col class="profile-row-col" :span="12">{{camelCaseToTitleCase(key)}}</el-col>
-                  <el-col v-if="(typeof data[key]) !== 'object'" class="profile-row-col" :span="12">
-
-                    <div v-if="key === 'price' || key === 'mileage'">
-                      {{new Intl.NumberFormat('tr-TR').format(data[key])}}
-                      {{key === 'price' ? '$' : 'km'}}
-                    </div>
-                    <div v-else-if="key === 'createdAt'">
-                      {{new Date("2024-03-16T00:58:21.377Z").toLocaleDateString("tr-TR")}}
-                    </div>
-                    <div v-else>
-                      {{data[key]}}
-                    </div>
-                  </el-col>
-                </el-row>
-                <div v-if="(typeof data[key]) === 'object'" v-for="i in getKeys(data[key])">
                   <el-row class="profile-row">
-                    <el-col  class="profile-row-col" :span="12">
-                      <div v-if="key !== 'lesson'">
-                        {{camelCaseToTitleCase(i)}}
+                    <el-col class="profile-row-col" :span="12">{{camelCaseToTitleCase(key)}}</el-col>
+                    <el-col v-if="(typeof data[key]) !== 'object'" class="profile-row-col" :span="12">
+
+                      <div v-if="key === 'price' || key === 'mileage'">
+                        {{new Intl.NumberFormat('tr-TR').format(data[key])}}
+                        {{key === 'price' ? '$' : 'km'}}
+                      </div>
+                      <div v-else-if="key === 'createdAt'">
+                        {{new Date("2024-03-16T00:58:21.377Z").toLocaleDateString("tr-TR")}}
+                      </div>
+                      <div v-else>
+                        {{data[key]}}
                       </div>
                     </el-col>
-                    <el-col class="profile-row-col" :span="12">{{data[key][i]}}</el-col>
                   </el-row>
-                </div>
-              </el-container>
-            </el-col>
+                  <div v-if="(typeof data[key]) === 'object'" v-for="i in getKeys(data[key])">
+                    <el-row class="profile-row">
+                      <el-col  class="profile-row-col" :span="12">
+                        <div v-if="key !== 'lesson'">
+                          {{camelCaseToTitleCase(i)}}
+                        </div>
+                      </el-col>
+                      <el-col class="profile-row-col" :span="12">{{data[key][i]}}</el-col>
+                    </el-row>
+                  </div>
+                </el-container>
+              </el-col>
+            </el-row>
+
+          <el-row class="profile-row" style="width: 50vw;margin-top: 20px">
+            <el-col class="profile-row-col" style="display: flex;justify-content: center;" :span="24">Description</el-col>
           </el-row>
-
-        <el-row class="profile-row" style="width: 50vw;margin-top: 20px">
-          <el-col class="profile-row-col" style="display: flex;justify-content: center;" :span="24">Description</el-col>
-        </el-row>
-        <el-row class="profile-row" style="width: 50vw;">
-          <el-col class="profile-row-col" style="    white-space: break-spaces;" :span="24">{{data['description']}}</el-col>
-        </el-row>
-
+          <el-row class="profile-row" style="width: 50vw;">
+            <el-col class="profile-row-col" style="    white-space: break-spaces;" :span="24">{{data['description']}}</el-col>
+          </el-row>
+        </div>
       </el-container>
     </el-col>
     </el-row>
@@ -96,15 +108,19 @@ import {computed, onBeforeMount, ref} from "vue";
 import {useListingService} from "../service/listing.service.ts";
 import {useUserService} from "../service/user.service.ts";
 import {useUserStore} from "../store/user.store.ts";
+import {useRouter} from "vue-router";
 
 const listingService = useListingService();
 const userService = useUserService();
 const userStore = useUserStore();
+const router = useRouter();
 const owner:any = ref({});
 const data:any = ref({});
 const isLoading = ref(true);
 const isAddingToFavorites = ref(false);
 const isActivating = ref(false);
+const isRemoving = ref(false);
+const isDeleteSuccessful = ref(false);
 const keysOfData = computed(() => {
   return Object.keys(data.value).filter((key) => key !== "user" && key !== "description"
   && key !== "isActive"&& key !== "additionalFields"&& key !== "image" && key !== "_id" && key != "title");
@@ -169,6 +185,26 @@ function deactivateListing() {
   });
 }
 
+function removeListing() {
+  isRemoving.value = true;
+  listingService.deleteListing(data.value._id).then(() => {
+    userService.removeFromListings(owner.value._id, data.value._id)
+        .then(() => {
+          isDeleteSuccessful.value = true;
+        }).catch((err) => {
+          console.log(err);
+        });
+  }).catch((err) => {
+    console.log(err);
+  })
+      .finally(() => {
+        isRemoving.value = false;
+      });
+}
+
+function updateListing() {
+  router.push({ name: "update-listing-category", params: { category:data.value.category.toLowerCase(), updateId: data.value._id } });
+}
 
 function camelCaseToTitleCase(str: string) {
   return str

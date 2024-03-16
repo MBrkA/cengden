@@ -78,11 +78,28 @@
 
 </template>
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {keysOfVehicle,carTypeFields,brandModels} from "../model/vehicle.model.ts";
 import {useUserStore} from "../store/user.store.ts";
 import {useListingService} from "../service/listing.service.ts";
 import {useUserService} from "../service/user.service.ts";
+import router from "../router";
+
+const props = defineProps<{
+  updateId?: any;
+}>();
+
+onMounted(() => {
+  if (props.updateId) {
+    listingService.getListingById(props.updateId).then((res) => {
+      form.value = res;
+      previousBrand.value = res.brand;
+      additionalFieldValues.value = res;
+    }).catch((err) => {
+      router.back();
+    });
+  }
+})
 
 const keys = ref(keysOfVehicle);
 const isSubmitSuccessful = ref(false);
@@ -93,11 +110,11 @@ const userServices = useUserService();
 const additionalFields = computed(() => {
   if (!form.value.type) {return [];}
   switch (form.value.type) {
-    case "electric car":
+    case "Electric Car":
       return carTypeFields.electric;
-    case "caravan":
+    case "Caravan":
       return carTypeFields.caravan;
-    case "truck":
+    case "Truck":
       return carTypeFields.truck;
     default:
       return [];
@@ -131,8 +148,23 @@ function resetAdditionalFields() {
 }
 
 function submitForm() {
-  // Object.keys(form.value).length === keys.value.length
-  if (true) {
+  if (props.updateId) {
+    const data = {...form.value, ...additionalFieldValues.value}
+    delete data._id;
+    isLoading.value = true;
+    listingService.updateListing(props.updateId, data)
+        .then(() => {
+          showError.value = false;
+          isSubmitSuccessful.value = true;
+        })
+        .catch((e) => {
+          showError.value = true;
+          console.log(e)
+        })
+        .finally(() => {
+          isLoading.value = false;
+        })
+  } else {
     const data = {...form.value, ...additionalFieldValues.value,user: userStore.user._id, isActive: true, createdAt: new Date(),
       category: "Vehicle"
     }
@@ -155,8 +187,6 @@ function submitForm() {
         .finally(() => {
           isLoading.value = false;
         })
-  } else {
-    showError.value = true;
   }
 }
 

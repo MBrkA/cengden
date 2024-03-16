@@ -48,11 +48,28 @@
 
 </template>
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {keysOfLesson} from "../model/lesson.model.ts";
 import {useUserStore} from "../store/user.store.ts";
 import {useListingService} from "../service/listing.service.ts";
 import {useUserService} from "../service/user.service.ts";
+import router from "../router";
+
+const props = defineProps<{
+  updateId?: any;
+}>();
+
+onMounted(() => {
+  if (props.updateId) {
+    listingService.getListingById(props.updateId).then((res) => {
+      form.value = res;
+      numOfLessons.value = res.lesson.length;
+      lessons.value = res.lesson;
+    }).catch((err) => {
+      router.back();
+    });
+  }
+})
 
 const keys = ref(keysOfLesson);
 const isSubmitSuccessful = ref(false);
@@ -80,11 +97,26 @@ function camelCaseToTitleCase(str: string) {
 }
 
 function submitForm() {
-// Object.keys(form.value).length === keys.value.length-numOfLessons.value
-  if (true) {
+  if (props.updateId){
     const data = {...form.value, lesson: lessons.value,user: userStore.user._id, isActive: true, createdAt: new Date(),
       category: "Lesson"
     }
+    delete data._id;
+    isLoading.value = true;
+    listingService.updateListing(props.updateId, data)
+        .then(() => {
+          showError.value = false;
+          isSubmitSuccessful.value = true;
+        })
+        .catch((e) => {
+          showError.value = true;
+          console.log(e)
+        })
+        .finally(() => {
+          isLoading.value = false;
+        })
+  } else {
+    const data = {...form.value, lesson: lessons.value}
     isLoading.value = true;
     listingService.createListing(data)
         .then((res) => {
@@ -106,8 +138,6 @@ function submitForm() {
         .finally(() => {
           isLoading.value = false;
         })
-  } else {
-    showError.value = true;
   }
 }
 
