@@ -57,6 +57,9 @@
                       {{new Intl.NumberFormat('tr-TR').format(data[key])}}
                       {{key === 'price' ? '$' : 'km'}}
                     </div>
+                    <div v-else-if="key === 'createdAt'">
+                      {{new Date("2024-03-16T00:58:21.377Z").toLocaleDateString("tr-TR")}}
+                    </div>
                     <div v-else>
                       {{data[key]}}
                     </div>

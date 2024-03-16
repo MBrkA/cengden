@@ -4,7 +4,7 @@
   <el-row style="margin-inline: 2rem">
     <el-col :span="4"> <category-table /> </el-col>
     <el-col :span="20">
-      <data-table :category="props.category" :isLoading="isLoading" :data="data"/>
+      <data-table :isLoading="isLoading" :data="computedData"/>
     </el-col>
   </el-row>
 </template>
@@ -14,7 +14,7 @@ import DataTable from "../components/DataTable.vue";
 import CategoryTable from "../components/CategoryTable.vue";
 import MainHeader from "../components/Header.vue";
 import {useListingService} from "../service/listing.service.ts";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 
 const props = defineProps<{
   category?: string;
@@ -24,6 +24,21 @@ const listingService = useListingService();
 
 const data = ref([]);
 const isLoading = ref(true);
+
+const computedData = computed(() => {
+  switch (props.category) {
+    case "Vehicle":
+      return data.value.filter((d) => d.category === "Vehicle");
+    case "Phone":
+      return data.value.filter((d) => d.category === "Phone");
+    case "Computer":
+      return data.value.filter((d) => d.category === "Computer");
+    case "Lesson":
+      return data.value.filter((d) => d.category === "Lesson");
+    default:
+      return data.value;
+  }
+});
 
 onMounted(() => {
   listingService.getAllListings().then((res) => {
