@@ -1,8 +1,8 @@
 
 <template>
   <el-container class="data-table-container">
-    <el-main>
-      <el-table class="data-table" stripe :data="tableData" v-loading="props.isLoading"
+    <el-main v-loading="props.isLoading">
+      <el-table class="data-table" stripe :data="tableData"
                 :cell-style="{ padding:'3px',height: '100px'}"
                 @row-click="handleRowClick"
       >
@@ -19,17 +19,28 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination class="data-pagination" @current-change="pageChange" background layout="prev, pager, next" :total="props.data.length" />
     </el-main>
   </el-container>
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue'
+import {computed, ref} from 'vue'
 import router from "../router";
 
+const currentPage = ref(1);
+
 const tableData = computed(() => {
-  return props.data.sort((a:any, b:any) => a.createdAt < b.createdAt ? 1 : -1);
+  const data =  props.data.sort((a:any, b:any) => a.createdAt < b.createdAt ? 1 : -1);
+  return data.slice((currentPage.value - 1) * 10, currentPage.value * 10);
+
 });
+
+
+const pageChange = (val: any) => {
+  currentPage.value = val;
+};
+
 
 const props = defineProps<{
   isLoading?: boolean;
@@ -55,5 +66,11 @@ function handleRowClick(row:any) {
   --el-table-header-bg-color: #e9e9e9;
   --el-fill-color-lighter: #f2f2f2;
   cursor: pointer;
+}
+.data-pagination{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
 </style>
