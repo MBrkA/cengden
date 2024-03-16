@@ -43,7 +43,7 @@ export const keysOfPhone = [
     {name: "ram", type: "select", options: ["2GB", "3GB", "4GB", "6GB", "8GB", "12GB", "16GB", "32GB"]},
     {name: "storage", type: "select", options: ["16GB", "32GB", "64GB", "128GB", "256GB", "512GB", "1TB"]},
     {name: "cameraSpecifications", type: "string"},
-    {name: "batteryCapacity", type: "number"},
+    {name: "batteryCapacity", type: "select", options: ["1000mAh", "2000mAh", "3000mAh", "4000mAh", "5000mAh", "6000mAh", "7000mAh", "8000mAh", "9000mAh", "10000mAh"]},
     {name: "price", type: "number"},
     {name: "image", type: "string"},
     {name: "description", type: "textarea"},

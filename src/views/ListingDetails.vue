@@ -53,8 +53,9 @@
                   <el-col class="profile-row-col" :span="12">{{camelCaseToTitleCase(key)}}</el-col>
                   <el-col v-if="(typeof data[key]) !== 'object'" class="profile-row-col" :span="12">
 
-                    <div v-if="key === 'price'">
-                      {{new Intl.NumberFormat('tr-TR').format(data[key])}} $
+                    <div v-if="key === 'price' || key === 'mileage'">
+                      {{new Intl.NumberFormat('tr-TR').format(data[key])}}
+                      {{key === 'price' ? '$' : 'km'}}
                     </div>
                     <div v-else>
                       {{data[key]}}

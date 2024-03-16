@@ -36,7 +36,7 @@ const router = useRouter();
 const categories = ref([
   {title: "Vehicles", value: "Vehicle"},
   {title: "Computers", value: "Computer"},
-  {title: "Phones", value: "Phones"},
+  {title: "Phones", value: "Phone"},
   {title: "Private Lessons", value: "Lesson"}
 ])
 

@@ -27,7 +27,7 @@ export const keysOfLesson = [
     {name: "tutorName", type: "string"},
     {name: "lessons", type: "number"},
     {name: "location", type: "string"},
-    {name: "duration", type: "string"},
+    {name: "duration", type: "number"},
     {name: "price", type: "number"},
     {name: "image", type: "string"},
     {name: "description", type: "textarea"},
