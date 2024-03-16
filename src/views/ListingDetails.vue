@@ -79,7 +79,7 @@
           <el-col class="profile-row-col" style="display: flex;justify-content: center;" :span="24">Description</el-col>
         </el-row>
         <el-row class="profile-row" style="width: 50vw;">
-          <el-col class="profile-row-col" style="" :span="24">{{data['description']}}</el-col>
+          <el-col class="profile-row-col" style="    white-space: break-spaces;" :span="24">{{data['description']}}</el-col>
         </el-row>
 
       </el-container>
