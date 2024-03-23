@@ -59,7 +59,7 @@
                 </el-container>
               </el-col>
               <el-col :span="12">
-                <el-container v-for="key in keysOfData" style="flex-direction: column">
+                <el-container v-for="key in keysOfData" class="profile-row" style="flex-direction: column;border-color: black;">
 
                   <el-row class="profile-row">
                     <el-col class="profile-row-col" :span="12">{{camelCaseToTitleCase(key)}}</el-col>
@@ -77,14 +77,14 @@
                       </div>
                     </el-col>
                   </el-row>
-                  <div v-if="(typeof data[key]) === 'object'" v-for="i in getKeys(data[key])">
+                  <div v-if="(typeof data[key]) === 'object'" v-for="(i,k) in data[key]">
                     <el-row class="profile-row">
                       <el-col  class="profile-row-col" :span="12">
                         <div v-if="key !== 'lesson'">
-                          {{camelCaseToTitleCase(i)}}
+                          {{k}}
                         </div>
                       </el-col>
-                      <el-col class="profile-row-col" :span="12">{{data[key][i]}}</el-col>
+                      <el-col class="profile-row-col" :span="12">{{i}}</el-col>
                     </el-row>
                   </div>
                 </el-container>
@@ -123,7 +123,7 @@ const isRemoving = ref(false);
 const isDeleteSuccessful = ref(false);
 const keysOfData = computed(() => {
   return Object.keys(data.value).filter((key) => key !== "user" && key !== "description"
-  && key !== "isActive"&& key !== "additionalFields"&& key !== "image" && key !== "_id" && key != "title");
+  && key !== "isActive"&& key !== "image" && key !== "_id" && key != "title");
 })
 const isListingInFavorites = computed(() => {
   return userStore.user?.favorites.includes(data.value._id);
@@ -220,6 +220,7 @@ onBeforeMount(() => {
             .then((res) => {
               owner.value = res;
               isLoading.value = false;
+              console.log(data.value)
             })
             .catch((err) => {
               console.log(err);
@@ -279,8 +280,8 @@ onBeforeMount(() => {
 .profile-row {
   width: 30vw;
   border: #dedede solid;
-  border-width: 1px 0 0 0;
-  padding-block: 10px;
+  border-width: 1px 0 1px 0;
+  padding-block: 5px;
 }
 .listing-detail-button {
   --el-button-bg-color: #40475f;

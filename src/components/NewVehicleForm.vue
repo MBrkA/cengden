@@ -4,7 +4,7 @@
       <el-container class="login-container">
         <p v-if="isSubmitSuccessful">Listing successful!</p>
         <el-form v-else v-loading="isLoading">
-          <a class="login-title">New Vehicle Listing</a>
+          <a class="login-title">Vehicle Listing Form</a>
           <el-container style="flex-direction: column" v-for="key of keys">
 
             <el-row class="profile-row">
@@ -19,7 +19,7 @@
                   <el-select v-if="key.type === 'select'  && key.name === 'type'" v-model="(form as any)[key.name]"
                              style="width: 300px"
                              :placeholder="camelCaseToTitleCase(key.name)"
-                             @change="resetAdditionalFields"
+                             @change="resetAdditionalSpecs"
                   >
                     <el-option :label="option" :value="option"
                                v-for="option in key.options"/>
@@ -49,15 +49,15 @@
               </el-col>
             </el-row>
 
-            <div v-if="key.name === 'type' && additionalFields.length !== 0" style="flex-direction: column; border-block: 1px #dedede solid; padding-top: 18px;margin-bottom: 18px">
-            <div  v-for="addKey of additionalFields">
+            <div v-if="key.name === 'type' && additionalSpecs.length !== 0" style="flex-direction: column; border-block: 1px #dedede solid; padding-top: 18px;margin-bottom: 18px">
+            <div  v-for="addKey of additionalSpecs">
 
               <el-row class="profile-row">
                 <el-col class="profile-row-col" :span="8">{{ camelCaseToTitleCase(addKey.name) }}</el-col>
                 <el-col class="profile-row-col" :span="16">
                   <el-form-item class="profile-row-col"
                   >
-                    <el-input style="width: 300px"  v-model="(additionalFieldValues as any)[addKey.name]"
+                    <el-input style="width: 300px"  v-model="(additionalSpecValues as any)[addKey.name]"
                               :placeholder="camelCaseToTitleCase(addKey.name)"
                               :type="addKey.type"
                     ></el-input>
@@ -68,8 +68,37 @@
             </div></div>
 
           </el-container>
+
+          <el-row class="profile-row">
+            <el-col class="profile-row-col" :span="8"> Additional Fields </el-col>
+            <el-col class="profile-row-col" :span="16">
+              <div  style="margin-bottom: 18px">
+                <el-button type="info" @click="addToAddFieldsRef" style="margin-bottom: 5px">Add</el-button>
+                <div v-for="(i,k) in addFieldsRef">
+                  <el-form-item class="profile-row-col" style="margin-bottom: 5px">
+                    <el-row>
+                      <el-col span="11">
+                        <el-input v-model="i['name']"
+                                  placeholder="Name"></el-input>
+                      </el-col>
+                      <el-col span="11">
+                        <el-input v-model="i['value']"
+                                  placeholder="Value"></el-input></el-col>
+                      <el-col span="2">
+                        <el-button width="50px" type="danger" @click="removeFromAddFieldsRef(k)">-</el-button>
+                      </el-col>
+                    </el-row>
+                  </el-form-item>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+
           <p class="error-text" v-if="showError">
             <span>Listing creation failed!</span>
+          </p>
+          <p class="error-text" v-if="showEmptyError">
+            <span>Fill all required fields!</span>
           </p>
           <el-form-item>
             <el-button class="login-input" type="primary" @click="submitForm">Submit</el-button>
@@ -97,7 +126,14 @@ onMounted(() => {
     listingService.getListingById(props.updateId).then((res) => {
       form.value = res;
       previousBrand.value = res.brand;
-      additionalFieldValues.value = res;
+      additionalSpecValues.value = res;
+
+      if (res.additionalFields) {
+        Object.keys(res.additionalFields).forEach((key:any) => {
+          const obj = {name: key, value: res.additionalFields[key]}
+          addFieldsRef.value.push(obj)
+        })
+      }
     }).catch(() => {
       router.back();
     });
@@ -110,7 +146,18 @@ const userStore = useUserStore();
 const listingService = useListingService();
 const userServices = useUserService();
 
-const additionalFields = computed(() => {
+
+// ADDITIONAL FIELDS
+const addFieldsRef = ref([])
+const addToAddFieldsRef = () => {
+  addFieldsRef.value.push({name: '', value: ''});
+}
+const removeFromAddFieldsRef = (key) => {
+  addFieldsRef.value.splice(key, 1)
+}
+
+
+const additionalSpecs = computed(() => {
   if (!form.value.type) {return [];}
   switch (form.value.type) {
     case "Electric Car":
@@ -126,9 +173,10 @@ const additionalFields = computed(() => {
 
 const isLoading = ref(false);
 const form:any = ref({})
+const showEmptyError = ref(false);
 const showError = ref(false);
 const previousBrand = ref('')
-const additionalFieldValues = ref({})
+const additionalSpecValues = ref({})
 
 
 const selectedBrand = computed(() => {
@@ -146,13 +194,35 @@ function camelCaseToTitleCase(str: string) {
       .replace(/^./, function(str){ return str.toUpperCase(); })
 }
 
-function resetAdditionalFields() {
-  additionalFieldValues.value = {}
+function resetAdditionalSpecs() {
+  additionalSpecValues.value = {}
+}
+
+function requiredCheck() {
+  for (let i of keys.value) {
+    if (i.required && !(form.value as any)[i.name]) {
+      showEmptyError.value = true;
+      return false;
+    }
+  }
+  showEmptyError.value = false;
+  return true;
 }
 
 function submitForm() {
+  if (!requiredCheck()) {
+    return;
+  }
+  const addFields = {}
+  addFieldsRef.value.forEach((i:any) => {
+    addFields[i.name] = i.value
+  })
+
   if (props.updateId) {
-    const data = {...form.value, ...additionalFieldValues.value}
+    const data = {...form.value, ...additionalSpecValues.value,
+      additionalFields: {...addFields},
+    }
+
     delete data._id;
     isLoading.value = true;
     listingService.updateListing(props.updateId, data)
@@ -168,9 +238,14 @@ function submitForm() {
           isLoading.value = false;
         })
   } else {
-    const data = {...form.value, ...additionalFieldValues.value,user: userStore.user._id, isActive: true, createdAt: new Date(),
+    const data = {...form.value, ...additionalSpecValues.value,
+      additionalFields: {...addFields},
+      user: userStore.user._id, isActive: true, createdAt: new Date(),
       category: "Vehicle"
     }
+
+    if (addFieldsRef.value.length === 0)
+      delete data.additionalFields;
     isLoading.value = true;
     listingService.createListing(data)
         .then((res) => {

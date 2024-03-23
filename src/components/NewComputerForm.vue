@@ -4,7 +4,7 @@
       <el-container class="login-container">
         <p v-if="isSubmitSuccessful">Listing successful!</p>
         <el-form v-else v-loading="isLoading">
-          <a class="login-title">New Computer Listing</a>
+          <a class="login-title">Computer Listing Form</a>
           <el-container style="flex-direction: column" v-for="key of keys">
 
             <el-row class="profile-row">
@@ -52,8 +52,37 @@
           </el-container>
 
 
+          <el-row class="profile-row">
+            <el-col class="profile-row-col" :span="8"> Additional Fields </el-col>
+            <el-col class="profile-row-col" :span="16">
+              <div  style="margin-bottom: 18px">
+                <el-button type="info" @click="addToAddFieldsRef" style="margin-bottom: 5px">Add</el-button>
+                <div v-for="(i,k) in addFieldsRef">
+                  <el-form-item class="profile-row-col" style="margin-bottom: 5px">
+                    <el-row>
+                      <el-col span="11">
+                        <el-input v-model="i['name']"
+                                  placeholder="Name"></el-input>
+                      </el-col>
+                      <el-col span="11">
+                        <el-input v-model="i['value']"
+                                  placeholder="Value"></el-input></el-col>
+                      <el-col span="2">
+                        <el-button width="50px" type="danger" @click="removeFromAddFieldsRef(k)">-</el-button>
+                      </el-col>
+                    </el-row>
+                  </el-form-item>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+
+
           <p class="error-text" v-if="showError">
             <span>Listing creation failed!</span>
+          </p>
+          <p class="error-text" v-if="showEmptyError">
+            <span>Fill all required fields!</span>
           </p>
           <el-form-item>
             <el-button class="login-input" type="primary" @click="submitForm">Submit</el-button>
@@ -82,6 +111,13 @@ onMounted(() => {
       form.value = res;
       previousBrand.value = res.brand;
       storageSpecs.value = res.storage;
+
+      if (res.additionalFields) {
+        Object.keys(res.additionalFields).forEach((key:any) => {
+          const obj = {name: key, value: res.additionalFields[key]}
+          addFieldsRef.value.push(obj)
+        })
+      }
     }).catch(() => {
       router.back();
     });
@@ -98,8 +134,19 @@ const keys = ref(keysOfComputer);
 
 const form = ref({})
 const storageSpecs = ref({})
+const showEmptyError = ref(false);
 const showError = ref(false);
 const previousBrand = ref('')
+
+
+// ADDITIONAL FIELDS
+const addFieldsRef = ref([])
+const addToAddFieldsRef = () => {
+  addFieldsRef.value.push({name: '', value: ''});
+}
+const removeFromAddFieldsRef = (key) => {
+  addFieldsRef.value.splice(key, 1)
+}
 
 const selectedBrand = computed(() => {
   if (form.value['brand' as keyof typeof form.value] !== previousBrand.value) {
@@ -116,9 +163,31 @@ function camelCaseToTitleCase(str: string) {
       .replace(/^./, function(str){ return str.toUpperCase(); })
 }
 
+function requiredCheck() {
+  for (let i of keys.value) {
+    if (i.required && !(form.value as any)[i.name]) {
+      showEmptyError.value = true;
+      return false;
+    }
+  }
+  showEmptyError.value = false;
+  return true;
+}
+
 function submitForm() {
+  if (!requiredCheck()) {
+    return;
+  }
+  const addFields = {}
+  addFieldsRef.value.forEach((i:any) => {
+    addFields[i.name] = i.value
+  })
+
   if (props.updateId) {
-    const data = {...form.value, storage: {...storageSpecs.value}}
+    const data = {...form.value,
+      additionalFields: {...addFields},
+      storage: {...storageSpecs.value}}
+
     delete data._id;
     isLoading.value = true;
     listingService.updateListing(props.updateId, data)
@@ -135,9 +204,13 @@ function submitForm() {
         })
   } else {
     const data = {...form.value, storage: {...storageSpecs.value},
+      additionalFields: {...addFields},
       user: userStore.user._id, isActive: true, createdAt: new Date(),
       category: "Computer"
     }
+
+    if (addFieldsRef.value.length === 0)
+      delete data.additionalFields;
     isLoading.value = true;
     listingService.createListing(data)
         .then((res) => {
