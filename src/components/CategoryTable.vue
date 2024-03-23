@@ -58,7 +58,6 @@ const handleNodeClick = (data: Tree) => {
   if (!data.children) {
     router.push({ name: "list-category", params: { category: data.label } });
   }
-
 }
 
 

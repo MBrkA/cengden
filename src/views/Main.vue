@@ -28,13 +28,13 @@ const isLoading = ref(true);
 const computedData = computed(() => {
   switch (props.category) {
     case "Vehicle":
-      return data.value.filter((d) => d.category === "Vehicle");
+      return data.value.filter((d:any) => d.category === "Vehicle");
     case "Phone":
-      return data.value.filter((d) => d.category === "Phone");
+      return data.value.filter((d:any) => d.category === "Phone");
     case "Computer":
-      return data.value.filter((d) => d.category === "Computer");
+      return data.value.filter((d:any) => d.category === "Computer");
     case "Lesson":
-      return data.value.filter((d) => d.category === "Lesson");
+      return data.value.filter((d:any) => d.category === "Lesson");
     default:
       return data.value;
   }

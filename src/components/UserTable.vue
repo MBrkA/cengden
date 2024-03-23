@@ -1,26 +1,16 @@
 
 <template>
   <el-container class="data-table-container">
-    <el-main v-loading="props.isLoading">
+    <el-main v-loading="props.isLoading || btnLoading">
       <el-table class="data-table" stripe :data="tableData"
                 :cell-style="{ padding:'3px',height: '100px'}"
-                @row-click="handleRowClick"
       >
-        <el-table-column width="120px"  prop="image" label="" style="width: 100px">
+        <el-table-column  prop="email" label="Email" ></el-table-column>
+        <el-table-column  prop="name" label="Name" ></el-table-column>
+        <el-table-column  prop="phone" label="Phone" ></el-table-column>
+        <el-table-column width="150px">
           <template #default="scope">
-            <img :src="scope.row.image" @error="$event.target.src='/photos/default.png'" :alt="scope.row.title"  style="width: 100px"/>
-          </template>
-        </el-table-column >
-        <el-table-column width="120px" prop="category" label="Category" ></el-table-column>
-        <el-table-column  prop="title" label="Title" ></el-table-column>
-        <el-table-column width="120px" prop="createdAt" label="Date" >
-          <template #default="scope">
-            {{new Date(scope.row.createdAt).toLocaleDateString('tr-TR')}}
-          </template>
-        </el-table-column>
-        <el-table-column width="200px"   prop="price" label="Price">
-          <template #default="scope">
-            {{new Intl.NumberFormat('tr-TR').format(scope.row.price)}} $
+            <el-button type="primary" @click="handleRemoveButtonClick(scope.row)">Remove</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -31,9 +21,13 @@
 
 <script setup lang="ts">
 import {computed, ref} from 'vue'
-import router from "../router";
+import {useUserService} from "../service/user.service.ts";
+import {useListingService} from "../service/listing.service.ts";
 
 const currentPage = ref(1);
+const btnLoading = ref(false);
+const userServices = useUserService();
+const listingService = useListingService();
 
 const tableData = computed(() => {
   const data =  props.data.sort((a:any, b:any) => a.createdAt < b.createdAt ? 1 : -1);
@@ -41,19 +35,31 @@ const tableData = computed(() => {
 
 });
 
-
 const pageChange = (val: any) => {
   currentPage.value = val;
 };
-
 
 const props = defineProps<{
   isLoading?: boolean;
   data?: any;
 }>();
 
-function handleRowClick(row:any) {
-  router.push(`/listing/${row['_id']}`);
+function handleRemoveButtonClick(row:any) {
+  btnLoading.value = true;
+  userServices.deleteUser(row._id).then(() => {
+        for (const listingsKey in row.listings) {
+          listingService.deleteListing(row.listings[listingsKey]._id).then(() => {
+          }).catch((err) => {
+            console.log(err);
+          });
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        props.data.splice(props.data.indexOf(row), 1);
+        btnLoading.value = false;
+      });
 }
 
 </script>
@@ -70,7 +76,6 @@ function handleRowClick(row:any) {
   --el-table-header-text-color: #292d2e;
   --el-table-header-bg-color: #e9e9e9;
   --el-fill-color-lighter: #f2f2f2;
-  cursor: pointer;
 }
 .data-pagination{
   display: flex;

@@ -25,6 +25,11 @@ class UserService {
         return result.data;
     }
 
+    async deleteUser(id: string) {
+        const result = await this.http.delete(`/user/${id}`);
+        return result.data;
+    }
+
     async login(email: string, password: string) {
         const result = await this.http.post("/user/login", { email, password });
         return result.data;

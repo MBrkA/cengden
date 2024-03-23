@@ -20,6 +20,11 @@
         <router-link class="login-text
         " to="/my-favorites">Favorites</router-link>
         <a class="login-line">|</a>
+        <div v-if="userStore.user.type === 'admin'">
+          <router-link class="login-text
+        " to="/users">Users</router-link>
+          <a class="login-line">|</a>
+        </div>
         <router-link class="login-text
         " to="/profile">Profile</router-link>
         <a class="login-line">|</a>

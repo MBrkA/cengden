@@ -8,7 +8,10 @@
           <el-container style="flex-direction: column" v-for="key of keys">
 
             <el-row class="profile-row">
-              <el-col class="profile-row-col" :span="8">{{ camelCaseToTitleCase(key.name) }}</el-col>
+              <el-col class="profile-row-col" :span="8">
+                {{ camelCaseToTitleCase(key.name) }}
+                <span v-if="key.required" style="color: red">*</span>
+              </el-col>
               <el-col class="profile-row-col" :span="16">
                 <el-form-item class="profile-row-col">
                   <el-input v-if="key.name === 'lessons'" style="width: 300px"  v-model="numOfLessons"
@@ -65,7 +68,7 @@ onMounted(() => {
       form.value = res;
       numOfLessons.value = res.lesson.length;
       lessons.value = res.lesson;
-    }).catch((err) => {
+    }).catch(() => {
       router.back();
     });
   }
@@ -98,9 +101,7 @@ function camelCaseToTitleCase(str: string) {
 
 function submitForm() {
   if (props.updateId){
-    const data = {...form.value, lesson: lessons.value,user: userStore.user._id, isActive: true, createdAt: new Date(),
-      category: "Lesson"
-    }
+    const data = {...form.value, lesson: lessons.value}
     delete data._id;
     isLoading.value = true;
     listingService.updateListing(props.updateId, data)
@@ -116,7 +117,9 @@ function submitForm() {
           isLoading.value = false;
         })
   } else {
-    const data = {...form.value, lesson: lessons.value}
+    const data = {...form.value, lesson: lessons.value,user: userStore.user._id, isActive: true, createdAt: new Date(),
+      category: "Lesson"
+    }
     isLoading.value = true;
     listingService.createListing(data)
         .then((res) => {

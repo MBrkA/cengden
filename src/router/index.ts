@@ -8,6 +8,7 @@ import NewListingForm from "../views/NewListingForm.vue";
 import ListingDetails from "../views/ListingDetails.vue";
 import MyListings from "../views/MyListings.vue";
 import MyFavorites from "../views/MyFavorites.vue";
+import Users from "../views/Users.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -47,6 +48,11 @@ const router = createRouter({
       path: "/my-favorites",
       name: "my-favorites",
       component: MyFavorites
+    },
+    {
+      path: "/users",
+      name: "users",
+      component: Users
     },
 
     {

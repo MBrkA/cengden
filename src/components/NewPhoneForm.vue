@@ -8,7 +8,10 @@
           <el-container style="flex-direction: column" v-for="key of keys">
 
             <el-row class="profile-row">
-              <el-col class="profile-row-col" :span="8">{{ camelCaseToTitleCase(key.name) }}</el-col>
+              <el-col class="profile-row-col" :span="8">
+                {{ camelCaseToTitleCase(key.name) }}
+                <span v-if="key.required" style="color: red">*</span>
+              </el-col>
               <el-col class="profile-row-col" :span="16">
                 <el-form-item class="profile-row-col">
 
@@ -79,7 +82,7 @@ onMounted(() => {
       form.value = res;
       previousBrand.value = res.brand;
       camSpecs.value = res.cameraSpecifications;
-    }).catch((err) => {
+    }).catch(() => {
       router.back();
     });
   }

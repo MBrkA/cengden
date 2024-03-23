@@ -33,26 +33,26 @@ export interface Phone {
 }
 
 export const keysOfPhone = [
-    {name: "title", type: "string"},
-    {name: "brand", type: "select", options: ["Apple", "Samsung", "Google", "Xiaomi", "Huawei", "Sony", "Lg", "Motorola", "Nokia", "Oppo", "Vivo", "Realme", "Asus", "Lenovo"]},
-    {name: "model", type: "select"},
-    {name: "year", type: "number"},
-    {name: "operatingSystem", type: "select", options: ["iOS", "Android"]},
+    {name: "title", type: "string", required: true},
+    {name: "brand", type: "select", options: ["Apple", "Samsung", "Google", "Xiaomi", "Huawei", "Sony", "Lg", "Motorola", "Nokia", "Oppo", "Vivo", "Realme", "Asus", "Lenovo"], required: true},
+    {name: "model", type: "select", required: true},
+    {name: "year", type: "number", required: false},
+    {name: "operatingSystem", type: "select", options: ["iOS", "Android"], required: false},
     {name: "processor", type: "select", options: ["Apple A15 Bionic", "Snapdragon 888", "Exynos 2100", "Snapdragon 870", "Snapdragon 865", "Snapdragon 855", "Snapdragon 765G", "Snapdragon 750G", "Snapdragon 732G", "Snapdragon 720G", "Snapdragon 690", "Snapdragon 675", "Snapdragon 665", "Snapdragon 460", "Snapdragon 450", "Snapdragon 439", "Snapdragon 430", "Snapdragon 425", "Snapdragon 410", "Snapdragon 400", "Snapdragon 200", "Snapdragon 210", "Snapdragon 205"]
-        },
-    {name: "ram", type: "select", options: ["2GB", "3GB", "4GB", "6GB", "8GB", "12GB", "16GB", "32GB"]},
-    {name: "storage", type: "select", options: ["16GB", "32GB", "64GB", "128GB", "256GB", "512GB", "1TB"]},
-    {name: "cameraSpecifications", type: "string"},
-    {name: "batteryCapacity", type: "select", options: ["1000mAh", "2000mAh", "3000mAh", "4000mAh", "5000mAh", "6000mAh", "7000mAh", "8000mAh", "9000mAh", "10000mAh"]},
-    {name: "price", type: "number"},
-    {name: "image", type: "string"},
-    {name: "description", type: "textarea"},
+        , required: false},
+    {name: "ram", type: "select", options: ["2GB", "3GB", "4GB", "6GB", "8GB", "12GB", "16GB", "32GB"], required: false},
+    {name: "storage", type: "select", options: ["16GB", "32GB", "64GB", "128GB", "256GB", "512GB", "1TB"], required: false},
+    {name: "cameraSpecifications", type: "string", required: false},
+    {name: "batteryCapacity", type: "select", options: ["1000mAh", "2000mAh", "3000mAh", "4000mAh", "5000mAh", "6000mAh", "7000mAh", "8000mAh", "9000mAh", "10000mAh"], required: false},
+    {name: "price", type: "number", required: true},
+    {name: "image", type: "string", required: false},
+    {name: "description", type: "textarea", required: false},
 ];
 
 export const cameraSpecificationsFields = [
-    {name: "main", type: "select", options: ["1MP", "2MP", "3MP", "4MP", "5MP", "6MP", "7MP", "8MP", "9MP", "10MP", "12MP", "16MP", "20MP", "24MP", "32MP", "48MP", "64MP", "108MP"]},
-    {name: "ultrawide", type: "select", options: ["1MP", "2MP", "3MP", "4MP", "5MP", "6MP", "7MP", "8MP", "9MP", "10MP", "12MP", "16MP", "20MP", "24MP", "32MP", "48MP", "64MP", "108MP"]},
-    {name: "telephoto", type: "select", options: ["1MP", "2MP", "3MP", "4MP", "5MP", "6MP", "7MP", "8MP", "9MP", "10MP", "12MP", "16MP", "20MP", "24MP", "32MP", "48MP", "64MP", "108MP"]},
+    {name: "main", type: "select", options: ["1MP", "2MP", "3MP", "4MP", "5MP", "6MP", "7MP", "8MP", "9MP", "10MP", "12MP", "16MP", "20MP", "24MP", "32MP", "48MP", "64MP", "108MP"], required: false},
+    {name: "ultrawide", type: "select", options: ["1MP", "2MP", "3MP", "4MP", "5MP", "6MP", "7MP", "8MP", "9MP", "10MP", "12MP", "16MP", "20MP", "24MP", "32MP", "48MP", "64MP", "108MP"], required: false},
+    {name: "telephoto", type: "select", options: ["1MP", "2MP", "3MP", "4MP", "5MP", "6MP", "7MP", "8MP", "9MP", "10MP", "12MP", "16MP", "20MP", "24MP", "32MP", "48MP", "64MP", "108MP"], required: false},
 ]
 
 export const brandModels = {

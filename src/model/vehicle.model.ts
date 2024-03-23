@@ -35,34 +35,34 @@ export interface Vehicle {
 }
 
 export const keysOfVehicle = [
-    {name: "title", type: "string"},
-    {name: "type", type: "select", options: ["Sedan", "SUV", "Electric Car", "Caravan", "Truck"]},
-    {name: "brand", type: "select", options: ["Toyota", "Honda", "Nissan", "Tesla", "Audi", "BMW", "Ford", "Chevrolet", "Jeep", "Ram", "Subaru", "Volkswagen", "Volvo"]},
-    {name: "model", type: "select"},
-    {name: "year", type: "number"},
-    {name: "color", type: "select", options: ["Black", "White", "Silver", "Gray", "Red", "Blue", "Brown", "Green", "Yellow", "Orange", "Purple", "Pink"]},
-    {name: "engineDisplacement", type: "select", options: ["N/A","1.0L", "1.2L", "1.4L", "1.6L", "1.8L", "2.0L", "2.2L", "2.4L", "2.6L", "2.8L", "3.0L", "3.2L", "3.4L", "3.6L", "3.8L", "4.0L", "4.2L", "4.4L", "4.6L", "4.8L", "5.0L", "5.2L", "5.4L", "5.6L", "5.8L", "6.0L", "6.2L", "6.4L", "6.6L", "6.8L", "7.0L", "7.2L", "7.4L", "7.6L", "7.8L", "8.0L"]},
-    {name: "fuelType", type: "select", options: ["Petrol", "Diesel", "Electric"]},
-    {name: "transmissionType", type: "select", options: ["Automatic", "Manual"]},
-    {name: "mileage", type: "number"},
-    {name: "price", type: "number"},
-    {name: "image", type: "string"},
-    {name: "description", type: "textarea"},
+    {name: "title", type: "string", required: true},
+    {name: "type", type: "select", options: ["Sedan", "SUV", "Electric Car", "Caravan", "Truck"], required: true},
+    {name: "brand", type: "select", options: ["Toyota", "Honda", "Nissan", "Tesla", "Audi", "BMW", "Ford", "Chevrolet", "Jeep", "Ram", "Subaru", "Volkswagen", "Volvo"], required: true},
+    {name: "model", type: "select", required: true},
+    {name: "year", type: "number", required: false},
+    {name: "color", type: "select", options: ["Black", "White", "Silver", "Gray", "Red", "Blue", "Brown", "Green", "Yellow", "Orange", "Purple", "Pink"], required: false},
+    {name: "engineDisplacement", type: "select", options: ["N/A","1.0L", "1.2L", "1.4L", "1.6L", "1.8L", "2.0L", "2.2L", "2.4L", "2.6L", "2.8L", "3.0L", "3.2L", "3.4L", "3.6L", "3.8L", "4.0L", "4.2L", "4.4L", "4.6L", "4.8L", "5.0L", "5.2L", "5.4L", "5.6L", "5.8L", "6.0L", "6.2L", "6.4L", "6.6L", "6.8L", "7.0L", "7.2L", "7.4L", "7.6L", "7.8L", "8.0L"], required: false},
+    {name: "fuelType", type: "select", options: ["Petrol", "Diesel", "Electric"], required: false},
+    {name: "transmissionType", type: "select", options: ["Automatic", "Manual"], required: false},
+    {name: "mileage", type: "number", required: false},
+    {name: "price", type: "number", required: true},
+    {name: "image", type: "string", required: false},
+    {name: "description", type: "textarea", required: false},
 ];
 
 
 export const electricVehicleFields = [
-    {name: "batteryCapacity", type: "number"},
-    {name: "range", type: "number"},
+    {name: "batteryCapacity", type: "number", required: false},
+    {name: "range", type: "number", required: false},
 ]
 
 export const caravanFields = [
-    {name: "bedCapacity", type: "number"},
-    {name: "waterTankCapacity", type: "number"},
+    {name: "bedCapacity", type: "number", required: false},
+    {name: "waterTankCapacity", type: "number", required: false},
 ]
 
 export const truckFields = [
-    {name: "payloadCapacity", type: "number"},
+    {name: "payloadCapacity", type: "number", required: false},
 ]
 
 export const carTypeFields = {

@@ -23,12 +23,12 @@ export interface Lesson {
 }
 
 export const keysOfLesson = [
-    {name: "title", type: "string"},
-    {name: "tutorName", type: "string"},
-    {name: "lessons", type: "number"},
-    {name: "location", type: "string"},
-    {name: "duration", type: "number"},
-    {name: "price", type: "number"},
-    {name: "image", type: "string"},
-    {name: "description", type: "textarea"},
+    {name: "title", type: "string", required: true},
+    {name: "tutorName", type: "string", required: false},
+    {name: "lessons", type: "number", required: true},
+    {name: "location", type: "string", required: false},
+    {name: "duration", type: "number", required: false},
+    {name: "price", type: "number", required: true},
+    {name: "image", type: "string", required: false},
+    {name: "description", type: "textarea", required: false},
 ];
