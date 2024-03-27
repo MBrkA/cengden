@@ -194,7 +194,6 @@ function submitForm() {
       additionalFields: {...addFields},
       storage: {...storageSpecs.value}}
 
-    const dataId = data._id;
     delete data._id;
     isLoading.value = true;
     listingService.updateListing(props.updateId, data)
@@ -202,7 +201,7 @@ function submitForm() {
           showError.value = false;
           isSubmitSuccessful.value = true;
           if (data['price'] && oldPrice >= data['price']) {
-            listingService.sendPriceDownMail(dataId)
+            listingService.sendPriceDownMail(props.updateId)
                 .then(() => {})
                 .catch((e) => {
                   console.log(e)

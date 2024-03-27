@@ -129,12 +129,14 @@ import router from "../router";
 const props = defineProps<{
   updateId?: any;
 }>();
+let oldPrice = 0;
 
 onMounted(() => {
   if (props.updateId) {
     listingService.getListingById(props.updateId).then((res) => {
       form.value = res;
       previousBrand.value = res.brand;
+      oldPrice = res.price;
 
       if (res.cameraSpecifications)
         Object.keys(res.cameraSpecifications).forEach((key:any) => {
@@ -237,6 +239,13 @@ function submitForm() {
         .then(() => {
           showError.value = false;
           isSubmitSuccessful.value = true;
+          if (data['price'] && oldPrice >= data['price']) {
+            listingService.sendPriceDownMail(props.updateId)
+                .then(() => {})
+                .catch((e) => {
+                  console.log(e)
+                })
+          }
         })
         .catch((e) => {
           showError.value = true;

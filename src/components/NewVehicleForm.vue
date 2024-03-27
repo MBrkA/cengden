@@ -124,6 +124,7 @@ import router from "../router";
 const props = defineProps<{
   updateId?: any;
 }>();
+let oldPrice = 0;
 
 onMounted(() => {
   if (props.updateId) {
@@ -131,6 +132,7 @@ onMounted(() => {
       form.value = res;
       previousBrand.value = res.brand;
       additionalSpecValues.value = res;
+      oldPrice = res.price;
 
       if (res.additionalFields) {
         Object.keys(res.additionalFields).forEach((key:any) => {
@@ -233,6 +235,13 @@ function submitForm() {
         .then(() => {
           showError.value = false;
           isSubmitSuccessful.value = true;
+          if (data['price'] && oldPrice >= data['price']) {
+            listingService.sendPriceDownMail(props.updateId)
+                .then(() => {})
+                .catch((e) => {
+                  console.log(e)
+                })
+          }
         })
         .catch((e) => {
           showError.value = true;
