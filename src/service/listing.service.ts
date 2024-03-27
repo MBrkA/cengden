@@ -19,6 +19,11 @@ class ListingService {
     return result.data;
   }
 
+  async getListingsByFilter(filter: any) {
+    const result = await this.http.post("/listing/filter", filter);
+    return result.data;
+  }
+
   async createListing(data: any) {
     const result = await this.http.post("/listing", data);
     return result.data;

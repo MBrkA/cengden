@@ -15,39 +15,7 @@ Phones:
 – Description: Description for the item.
  */
 
-export interface Phone {
-  id: number;
-  title: string;
-  brand: string;
-  model: string;
-  year: number;
-  operatingSystem: string;
-  processor: string;
-  ram: string;
-  storage: string;
-  cameraSpecifications: string;
-  batteryCapacity: string;
-  price: number;
-  image: string;
-  description: string;
-}
 
-export const keysOfPhone = [
-    {name: "title", type: "string", required: true},
-    {name: "brand", type: "select", options: ["Apple", "Samsung", "Google", "Xiaomi", "Huawei", "Sony", "Lg", "Motorola", "Nokia", "Oppo", "Vivo", "Realme", "Asus", "Lenovo"], required: true},
-    {name: "model", type: "select", required: true},
-    {name: "year", type: "number", required: false},
-    {name: "operatingSystem", type: "select", options: ["iOS", "Android"], required: false},
-    {name: "processor", type: "select", options: ["Apple A15 Bionic", "Snapdragon 888", "Exynos 2100", "Snapdragon 870", "Snapdragon 865", "Snapdragon 855", "Snapdragon 765G", "Snapdragon 750G", "Snapdragon 732G", "Snapdragon 720G", "Snapdragon 690", "Snapdragon 675", "Snapdragon 665", "Snapdragon 460", "Snapdragon 450", "Snapdragon 439", "Snapdragon 430", "Snapdragon 425", "Snapdragon 410", "Snapdragon 400", "Snapdragon 200", "Snapdragon 210", "Snapdragon 205"]
-        , required: false},
-    {name: "ram", type: "select", options: ["2GB", "3GB", "4GB", "6GB", "8GB", "12GB", "16GB", "32GB"], required: false},
-    {name: "storage", type: "select", options: ["16GB", "32GB", "64GB", "128GB", "256GB", "512GB", "1TB"], required: false},
-    {name: "cameraSpecifications", type: "string", required: false},
-    {name: "batteryCapacity", type: "select", options: ["1000mAh", "2000mAh", "3000mAh", "4000mAh", "5000mAh", "6000mAh", "7000mAh", "8000mAh", "9000mAh", "10000mAh"], required: false},
-    {name: "price", type: "number", required: true},
-    {name: "image", type: "string", required: false},
-    {name: "description", type: "textarea", required: false},
-];
 
 export const cameraSpecificationsFields = [
     {name: "main", type: "select", options: ["1MP", "2MP", "3MP", "4MP", "5MP", "6MP", "7MP", "8MP", "9MP", "10MP", "12MP", "16MP", "20MP", "24MP", "32MP", "48MP", "64MP", "108MP"], required: false},
@@ -72,3 +40,26 @@ export const brandModels = {
     "Asus": ["Zenfone 8", "Zenfone 7 Pro", "Zenfone 7", "Zenfone 6", "Zenfone 5", "Zenfone 4", "Zenfone 3", "Zenfone 2", "Zenfone 1", "ROG Phone 5", "ROG Phone 3", "ROG Phone 2", "ROG Phone 1"],
     "Lenovo": ["Legion Phone Duel 2", "Legion Phone Duel", "K13", "K12", "K11", "K10", "K9", "K8", "K7", "K6", "K5", "K4", "K3", "K2", "K1", "Z6 Pro", "Z6", "Z5 Pro", "Z5", "Z4 Pro", "Z4", "Z3 Pro", "Z3", "Z2 Pro", "Z2", "Z1", "S5 Pro", "S5", "S3", "S2", "S1", "P2", "P1", "A8", "A7", "A6", "A5", "A4", "A3", "A2", "A1", "Vibe K6", "Vibe K5", "Vibe K4", "Vibe K3", "Vibe K2", "Vibe K1"],
 }
+
+export const phoneBrands = ["Apple", "Samsung", "Google", "Xiaomi", "Huawei", "Sony", "Lg", "Motorola", "Nokia", "Oppo", "Vivo", "Realme", "Asus", "Lenovo"];
+export const operatingSystems = ["iOS", "Android"];
+export const processors = ["Apple A15 Bionic", "Snapdragon 888", "Exynos 2100", "Snapdragon 870", "Snapdragon 865", "Snapdragon 855", "Snapdragon 765G", "Snapdragon 750G", "Snapdragon 732G", "Snapdragon 720G", "Snapdragon 690", "Snapdragon 675", "Snapdragon 665", "Snapdragon 460", "Snapdragon 450", "Snapdragon 439", "Snapdragon 430", "Snapdragon 425", "Snapdragon 410", "Snapdragon 400", "Snapdragon 200", "Snapdragon 210", "Snapdragon 205"];
+export const ramOptions = ["2GB", "3GB", "4GB", "6GB", "8GB", "12GB", "16GB", "32GB"];
+export const storageOptions = ["16GB", "32GB", "64GB", "128GB", "256GB", "512GB", "1TB"];
+export const batteryCapacityOptions = ["1000mAh", "2000mAh", "3000mAh", "4000mAh", "5000mAh", "6000mAh", "7000mAh", "8000mAh", "9000mAh", "10000mAh"];
+
+export const keysOfPhone = [
+    {name: "title", type: "string", required: true},
+    {name: "brand", type: "select", options: phoneBrands, required: true},
+    {name: "model", type: "select", required: true},
+    {name: "year", type: "number", required: false},
+    {name: "operatingSystem", type: "select", options: operatingSystems, required: false},
+    {name: "processor", type: "select", options: processors, required: false},
+    {name: "ram", type: "select", options: ramOptions, required: false},
+    {name: "storage", type: "select", options: storageOptions, required: false},
+    {name: "cameraSpecifications", type: "string", required: false},
+    {name: "batteryCapacity", type: "select", options: batteryCapacityOptions, required: false},
+    {name: "price", type: "number", required: true},
+    {name: "image", type: "string", required: false},
+    {name: "description", type: "textarea", required: false},
+];

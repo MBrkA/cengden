@@ -17,39 +17,6 @@ hyperlink to an image file on the Internet is fine
 – Description: Description for item.
  */
 
-export interface Vehicle {
-  id: number;
-  title: string;
-  type: string;
-  brand: string;
-  model: string;
-  year: number;
-  color: string;
-  engineDisplacement: number;
-  fuelType: string;
-  transmissionType: string;
-  mileage: number;
-  price: number;
-  image: string;
-  description: string;
-}
-
-export const keysOfVehicle = [
-    {name: "title", type: "string", required: true},
-    {name: "type", type: "select", options: ["Sedan", "SUV", "Electric Car", "Caravan", "Truck"], required: true},
-    {name: "brand", type: "select", options: ["Toyota", "Honda", "Nissan", "Tesla", "Audi", "BMW", "Ford", "Chevrolet", "Jeep", "Ram", "Subaru", "Volkswagen", "Volvo"], required: true},
-    {name: "model", type: "select", required: true},
-    {name: "year", type: "number", required: false},
-    {name: "color", type: "select", options: ["Black", "White", "Silver", "Gray", "Red", "Blue", "Brown", "Green", "Yellow", "Orange", "Purple", "Pink"], required: false},
-    {name: "engineDisplacement", type: "select", options: ["N/A","1.0L", "1.2L", "1.4L", "1.6L", "1.8L", "2.0L", "2.2L", "2.4L", "2.6L", "2.8L", "3.0L", "3.2L", "3.4L", "3.6L", "3.8L", "4.0L", "4.2L", "4.4L", "4.6L", "4.8L", "5.0L", "5.2L", "5.4L", "5.6L", "5.8L", "6.0L", "6.2L", "6.4L", "6.6L", "6.8L", "7.0L", "7.2L", "7.4L", "7.6L", "7.8L", "8.0L"], required: false},
-    {name: "fuelType", type: "select", options: ["Petrol", "Diesel", "Electric"], required: false},
-    {name: "transmissionType", type: "select", options: ["Automatic", "Manual"], required: false},
-    {name: "mileage", type: "number", required: false},
-    {name: "price", type: "number", required: true},
-    {name: "image", type: "string", required: false},
-    {name: "description", type: "textarea", required: false},
-];
-
 
 export const electricVehicleFields = [
     {name: "batteryCapacity", type: "number", required: false},
@@ -71,6 +38,10 @@ export const carTypeFields = {
     "truck": truckFields,
 }
 
+export const vehicleTypes = ["Sedan", "SUV", "Electric Car", "Caravan", "Truck"];
+
+export const vehicleBrands = ["Toyota", "Honda", "Nissan", "Tesla", "Audi", "BMW", "Ford", "Chevrolet", "Jeep", "Ram", "Subaru", "Volkswagen", "Volvo"];
+
 export const brandModels = {
     "": [],
     "Toyota": ["Camry", "Corolla", "Avalon", "Prius", "Yaris", "86", "Sienna", "Tacoma", "Tundra", "C-HR", "RAV4", "Highlander", "4Runner", "Sequoia", "Land Cruiser", "Supra", "Mirai"],
@@ -87,3 +58,27 @@ export const brandModels = {
     "Volkswagen": ["Golf","Polo", "Jetta", "Passat", "Arteon", "Tiguan", "Atlas", "Taos", "ID.4", "ID.3", "ID. Buzz", "ID. Space Vizzion", "ID. Buggy", "ID. Crozz", "ID. Roomzz"],
     "Volvo": ["S60", "S90", "V60", "V90", "XC40", "XC60", "XC90", "C40", "C70", "V40", "V50", "V70", "V90", "S40", "S50", "S60", "S70", "S80", "S90", "C30", "C40", "C70", "C80", "C90", "XC40", "XC50", "XC60", "XC70", "XC80", "XC90", "XC100", "P1800", "P1900", "P2000", "P2100", "P2200", "P2300", "P2400", "P2500", "P2600", "P2700", "P2800", "P2900", "P3000", "P3100", "P3200", "P3300", "P3400", "P3500", "P3600", "P3700", "P3800", "P3900", "P4000", "P4100", "P4200", "P4300", "P4400", "P4500", "P4600", "P4700", "P4800", "P4900", "P5000", "P5100", "P5200", "P5300", "P5400", "P5500", "P5600", "P5700", "P5800", "P5900", "P6000", "P6100", "P6200", "P6300", "P6400", "P6500", "P6600", "P6700", "P6800", "P6900", "P7000", "P7100", "P7200", "P7300", "P7400", "P7500", "P7600", "P7700", "P7800", "P7900", "P8000", "P8100", "P8200", "P8300", "P8400", "P8500", "P8600", "P8700", "P8800", "P8900", "P9000", "P9100"],
 }
+
+export const colorOptions = ["Black", "White", "Silver", "Gray", "Red", "Blue", "Brown", "Green", "Yellow", "Orange", "Purple", "Pink"];
+
+export const engineDisplacementOptions = ["N/A","1.0L", "1.2L", "1.4L", "1.6L", "1.8L", "2.0L", "2.2L", "2.4L", "2.6L", "2.8L", "3.0L", "3.2L", "3.4L", "3.6L", "3.8L", "4.0L", "4.2L", "4.4L", "4.6L", "4.8L", "5.0L", "5.2L", "5.4L", "5.6L", "5.8L", "6.0L", "6.2L", "6.4L", "6.6L", "6.8L", "7.0L", "7.2L", "7.4L", "7.6L", "7.8L", "8.0L"];
+
+export const transmissionTypes = ["Automatic", "Manual"];
+
+export const fuelTypes = ["Petrol", "Diesel", "Electric"];
+
+export const keysOfVehicle = [
+    {name: "title", type: "string", required: true},
+    {name: "type", type: "select", options: vehicleTypes, required: true},
+    {name: "brand", type: "select", options: vehicleBrands, required: true},
+    {name: "model", type: "select", required: true},
+    {name: "year", type: "number", required: false},
+    {name: "color", type: "select", options: colorOptions, required: false},
+    {name: "engineDisplacement", type: "select", options: engineDisplacementOptions, required: false},
+    {name: "fuelType", type: "select", options: fuelTypes, required: false},
+    {name: "transmissionType", type: "select", options: transmissionTypes, required: false},
+    {name: "mileage", type: "number", required: false},
+    {name: "price", type: "number", required: true},
+    {name: "image", type: "string", required: false},
+    {name: "description", type: "textarea", required: false},
+];
