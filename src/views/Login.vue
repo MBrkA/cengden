@@ -33,6 +33,7 @@ import AppLogo from "../components/AppLogo.vue";
 import {useUserService} from "../service/user.service.ts";
 import {useUserStore} from "../store/user.store.ts";
 import {useRouter} from "vue-router";
+import CryptoJS from "crypto-js";
 
 const userService = useUserService();
 const userStore = useUserStore();
@@ -46,7 +47,8 @@ const form = ref({
 const isError = ref(false);
 
 function submitForm() {
-  userService.login(form.value.email,form.value.password).then((response) => {
+  const encryptedPassword = CryptoJS.SHA3(form.value.password).toString();
+  userService.login(form.value.email,encryptedPassword).then((response) => {
     if (response){
       userStore.setUser(response);
       router.push("/");

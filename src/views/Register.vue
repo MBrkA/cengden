@@ -45,6 +45,7 @@
 import {computed, ref} from 'vue'
 import AppLogo from "../components/AppLogo.vue";
 import {useUserService} from "../service/user.service.ts";
+import CryptoJS from "crypto-js";
 
 const form = ref({
   name: "",
@@ -94,6 +95,7 @@ const userService = useUserService();
 function submitForm() {
   isSubmitted.value = true;
   if (validateEmail.value && validatePassword.value) {
+    form.value.password = CryptoJS.SHA3(form.value.password).toString();
     userService.createUser({
       type: "user",
       isVerified: false,
@@ -106,6 +108,7 @@ function submitForm() {
         })
         .catch(() => {
           showError.value = true;
+          form.value.password = passwordAgain;
         })
   } else {
     showError.value = true;
