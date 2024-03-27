@@ -70,6 +70,7 @@ import {computed, onBeforeMount, onMounted, ref} from "vue";
 import {useUserStore} from "../store/user.store.ts";
 import {useUserService} from "../service/user.service.ts";
 import {useRouter} from "vue-router";
+import CryptoJS from "crypto-js";
 
 const userStore = useUserStore();
 const userService = useUserService();
@@ -107,11 +108,12 @@ function submitPassword() {
   if (!form.value.password || form.value.password !== passwordAgain.value){
     return;
   }
-  const newUser = {...userStore.user, password: form.value.password}
+  const encryptedPassword = CryptoJS.SHA3(form.value.password).toString();
+  const newUser = {...userStore.user, password: encryptedPassword}
   delete newUser._id
   userService.updateUser(userStore.user._id, newUser)
       .then(() => {
-        userStore.setUser({...userStore.user, password: form.value.password})
+        userStore.setUser({...userStore.user, password: encryptedPassword})
         isPasswordSubmitted.value = true;
       });
 }
