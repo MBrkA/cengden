@@ -25,6 +25,12 @@ class UserService {
         return result.data;
     }
 
+    async verifyUser(id: string) {
+        console.log(id)
+        const result = await this.http.put(`/user/verify/${id}`);
+        return result.data;
+    }
+
     async deleteUser(id: string) {
         const result = await this.http.delete(`/user/${id}`);
         return result.data;

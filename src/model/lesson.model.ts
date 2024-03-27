@@ -10,21 +10,9 @@ Private Lessons:
 
  */
 
-export interface Lesson {
-  id: number;
-  title: string;
-  tutorName: string;
-  lessons: string;
-  location: string;
-  duration: string;
-  price: number;
-  image: string;
-  description: string;
-}
 
 export const keysOfLesson = [
     {name: "title", type: "string", required: true},
-    {name: "tutorName", type: "string", required: false},
     {name: "lessons", type: "number", required: true},
     {name: "location", type: "string", required: false},
     {name: "duration", type: "number", required: false},

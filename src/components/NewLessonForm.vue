@@ -19,6 +19,10 @@
                             @change="updateLessons"
                             :type="key.type" min="1"></el-input>
 
+                  <el-input v-else-if="key.type==='number'" style="width: 300px"  v-model.number="(form as any)[key.name]"
+                            :placeholder="camelCaseToTitleCase(key.name)"
+                            :type="key.type" min="0"
+                  ></el-input>
                   <el-input v-else style="width: 300px"  v-model="(form as any)[key.name]"
                             :placeholder="camelCaseToTitleCase(key.name)"
                             :type="key.type" min="0"

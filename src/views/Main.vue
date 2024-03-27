@@ -6,6 +6,7 @@
       <category-table />
       <el-container
           v-if="props.category" class="filter-table-container">
+        <el-input v-model="filter['title']" placeholder="Title"/>
         <el-select
             v-for="attr in filterOptions[props.category]"
             v-model="filter[attr.filterName]"
@@ -20,6 +21,15 @@
               :value="item"
           />
       </el-select>
+        <el-row v-if="props.category === 'Lesson'">
+          <el-input v-model="filter['lesson']" placeholder="Lesson"/>
+          <el-input v-model="filter['location']" placeholder="Location"/>
+          <el-input v-model.number="filter['duration']" placeholder="Duration" type="number"/>
+        </el-row>
+        <el-row>
+          <el-col :span="12"><el-input v-model.number="filter['minPrice']" placeholder="MinPrice" type="number"/></el-col>
+          <el-col :span="12"><el-input v-model.number="filter['maxPrice']" placeholder="MaxPrice" type="number"/></el-col>
+        </el-row>
       <el-button @click="filterData" type="primary">Filter</el-button>
     </el-container>
     </el-col>
@@ -34,11 +44,10 @@ import DataTable from "../components/DataTable.vue";
 import CategoryTable from "../components/CategoryTable.vue";
 import MainHeader from "../components/Header.vue";
 import {useListingService} from "../service/listing.service.ts";
-import {computed, onMounted, ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import * as VehicleAttrs from "../model/vehicle.model.ts";
 import * as PhoneAttrs from "../model/phone.model.ts";
 import * as ComputerAttrs from "../model/computer.model.ts";
-import * as LessonAttrs from "../model/lesson.model.ts";
 
 const props = defineProps<{
   category?: string;
@@ -81,6 +90,11 @@ const computerAttrs = [
   {name: "hddOptions", value: ComputerAttrs.storageFields[0].options, filterName: "hdd"},
   {name: "ramOptions", value: ComputerAttrs.ramOptions, filterName: "ram"},
   {name: "graphicsCards", value: ComputerAttrs.graphicsCards, filterName: "graphicsCard"},
+]
+
+const lessonAttrs = [
+  {name: "location", type: "string", required: false},
+  {name: "duration", type: "number", required: false},
 ]
 
 const filterOptions = {

@@ -9,6 +9,7 @@ import ListingDetails from "../views/ListingDetails.vue";
 import MyListings from "../views/MyListings.vue";
 import MyFavorites from "../views/MyFavorites.vue";
 import Users from "../views/Users.vue";
+import Verify from "../views/Verify.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -77,7 +78,14 @@ const router = createRouter({
         name: "listing-details",
         component: ListingDetails,
         props: true,
-    }
+    },
+    {
+        path: "/verify/:id",
+        name: "verify",
+        component: Verify,
+        props: true,
+    },
+
   ],
 });
 

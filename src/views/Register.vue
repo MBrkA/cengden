@@ -80,6 +80,7 @@ const errorPhoneClass = computed(() => {
 
 const validateEmail = computed(() => {
   // ...@ceng.metu.edu.tr
+  return true;
   const emailRegex = new RegExp("^[a-zA-Z0-9._-]+@ceng.metu.edu.tr$")
   return emailRegex.test(form.value.email)
 })

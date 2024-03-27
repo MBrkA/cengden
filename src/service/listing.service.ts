@@ -49,6 +49,12 @@ class ListingService {
         return result.data;
     }
 
+    async sendPriceDownMail(id: string) {
+        const result = await this.http.post(`/listing/price-down/${id}`, {});
+        return result.data;
+
+    }
+
 }
 
 let GLOBAL_LISTING_SERVICE: ListingService | null = null;

@@ -15,7 +15,11 @@
               <el-col class="profile-row-col" :span="16">
                 <el-form-item class="profile-row-col">
 
-                  <el-select v-if="key.type === 'select' && key.name !== 'model'" v-model="(form as any)[key.name]"
+                  <el-input v-if="key.type==='number'" style="width: 300px"  v-model.number="(form as any)[key.name]"
+                            :placeholder="camelCaseToTitleCase(key.name)"
+                            :type="key.type" min="0"
+                  ></el-input>
+                  <el-select v-else-if="key.type === 'select' && key.name !== 'model'" v-model="(form as any)[key.name]"
                              style="width: 300px"
                              :placeholder="camelCaseToTitleCase(key.name)"
                   >
@@ -104,6 +108,7 @@ import router from "../router";
 const props = defineProps<{
   updateId?: any;
 }>();
+let oldPrice = 0;
 
 onMounted(() => {
   if (props.updateId) {
@@ -111,6 +116,7 @@ onMounted(() => {
       form.value = res;
       previousBrand.value = res.brand;
       storageSpecs.value = res.storage;
+      oldPrice = res.price;
 
       if (res.additionalFields) {
         Object.keys(res.additionalFields).forEach((key:any) => {
@@ -188,12 +194,20 @@ function submitForm() {
       additionalFields: {...addFields},
       storage: {...storageSpecs.value}}
 
+    const dataId = data._id;
     delete data._id;
     isLoading.value = true;
     listingService.updateListing(props.updateId, data)
         .then(() => {
           showError.value = false;
           isSubmitSuccessful.value = true;
+          if (data['price'] && oldPrice >= data['price']) {
+            listingService.sendPriceDownMail(dataId)
+                .then(() => {})
+                .catch((e) => {
+                  console.log(e)
+                })
+          }
         })
         .catch((e) => {
           showError.value = true;

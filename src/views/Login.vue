@@ -15,10 +15,12 @@
           <el-form-item >
             <el-input class="login-input" v-model="form.password" type="password" placeholder="Password"></el-input>
           </el-form-item>
+          <p class="error-text" v-if="isError">Login failed!</p>
           <el-form-item>
             <el-button class="login-input" type="primary" @click="submitForm">Login</el-button>
           </el-form-item>
         </el-form>
+
       </el-container>
     </el-col>
 </el-row>
@@ -41,11 +43,15 @@ const form = ref({
   password: ""
 })
 
+const isError = ref(false);
+
 function submitForm() {
   userService.login(form.value.email,form.value.password).then((response) => {
     if (response){
       userStore.setUser(response);
       router.push("/");
+    } else {
+      isError.value = true;
     }
   });
 }

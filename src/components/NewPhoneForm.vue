@@ -29,6 +29,10 @@
                     <el-option :label="option" :value="option"
                                v-for="option in brandModels[selectedBrand as keyof typeof brandModels]"/>
                   </el-select>
+                  <el-input v-else-if="key.name !== 'cameraSpecifications' && key.type==='number'"   v-model.number="(form as any)[key.name]"
+                            :placeholder="camelCaseToTitleCase(key.name)"
+                            :type="key.type" min="0"
+                  ></el-input>
                   <el-input v-else-if="key.name !== 'cameraSpecifications'"   v-model="(form as any)[key.name]"
                             :placeholder="camelCaseToTitleCase(key.name)"
                             :type="key.type" min="0"
