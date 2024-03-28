@@ -71,9 +71,9 @@ app.post('/user', (req, res) => {
     })
 })
 
-app.put('/user/verify/:id', (req, res) => {
+app.get('/user/verify/:id', (req, res) => {
     verifyUser(client, req.params.id).then(data => {
-        res.send(data);
+        res.redirect('https://four95hw1.onrender.com/?verified=true');
     }).catch(err => {
         res.send(err);
     })

@@ -26,6 +26,12 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/?verified=:verified",
+      name: "home-verified",
+      component: Main,
+      props: true,
+    },
+    {
       path: "/login",
       name: "login",
       component: Login,

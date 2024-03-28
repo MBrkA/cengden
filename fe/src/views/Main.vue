@@ -56,13 +56,15 @@ import DataTable from "../components/DataTable.vue";
 import CategoryTable from "../components/CategoryTable.vue";
 import MainHeader from "../components/Header.vue";
 import {useListingService} from "../service/listing.service.ts";
-import {onMounted, ref, watch} from "vue";
+import {onBeforeMount, onMounted, ref, watch} from "vue";
 import * as VehicleAttrs from "../model/vehicle.model.ts";
 import * as PhoneAttrs from "../model/phone.model.ts";
 import * as ComputerAttrs from "../model/computer.model.ts";
+import router from "../router";
 
 const props = defineProps<{
   category?: string;
+  verified?: string;
 }>();
 
 const listingService = useListingService();
@@ -137,6 +139,10 @@ onMounted(() => {
   }).catch((err) => {
     console.log(err);
   });
+})
+
+onBeforeMount(() => {
+  if (props.verified) router.push("verify");
 })
 
 

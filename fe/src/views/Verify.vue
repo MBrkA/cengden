@@ -26,15 +26,18 @@ const props = defineProps<{
   id?: any;
 }>();
 
-const isVerifySuccessful = ref(false);
+const isVerifySuccessful = ref(true);
 
 onMounted(() => {
+  /*
   userService.verifyUser(props.id)
       .then((response) => {
         if (response){
           isVerifySuccessful.value = true;
         }
       });
+
+   */
 })
 
 </script>
