@@ -8,7 +8,7 @@
     <el-col class="login-header" :span="24">
       <el-container class="login-container">
         <a class="login-title">Register</a>
-        <el-form v-if="!isSubmitSuccessful">
+        <el-form v-if="!isSubmitSuccessful" v-loading="isLoading">
           <el-form-item >
             <el-input class="login-input" :class="errorNameClass" v-model="form.name" placeholder="Name"></el-input>
           </el-form-item>
@@ -55,6 +55,7 @@ const form = ref({
 })
 const passwordAgain = ref("");
 
+const isLoading = ref(false);
 const showError = ref(false);
 const isSubmitted = ref(false);
 const isSubmitSuccessful = ref(false);
@@ -92,6 +93,7 @@ const validatePassword = computed(() => {
 const userService = useUserService();
 
 function submitForm() {
+  isLoading.value = true;
   isSubmitted.value = true;
   if (validateEmail.value && validatePassword.value) {
     form.value.password = CryptoJS.SHA3(form.value.password).toString();
@@ -108,6 +110,9 @@ function submitForm() {
         .catch(() => {
           showError.value = true;
           form.value.password = passwordAgain;
+        })
+        .finally(() => {
+          isLoading.value = false;
         })
   } else {
     showError.value = true;

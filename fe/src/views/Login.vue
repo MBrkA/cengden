@@ -8,7 +8,7 @@
     <el-col class="login-header" :span="24">
       <el-container class="login-container">
         <a class="login-title">Login</a>
-        <el-form>
+        <el-form v-loading="isLoading">
           <el-form-item >
             <el-input class="login-input" v-model="form.email" placeholder="E-mail"></el-input>
           </el-form-item>
@@ -45,10 +45,13 @@ const form = ref({
 })
 
 const isError = ref(false);
+const isLoading = ref(false);
 
 function submitForm() {
+  isLoading.value = true;
   const encryptedPassword = CryptoJS.SHA3(form.value.password).toString();
   userService.login(form.value.email,encryptedPassword).then((response) => {
+    isLoading.value = false;
     if (response){
       userStore.setUser(response);
       router.push("/");
