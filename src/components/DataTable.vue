@@ -8,7 +8,8 @@
       >
         <el-table-column width="120px"  prop="image" label="" style="width: 100px">
           <template #default="scope">
-            <img :src="scope.row.image" @error="$event.target.src='/photos/default.png'" :alt="scope.row.title"  style="width: 100px"/>
+            <img v-if="scope.row.image" :src="scope.row.image" @error="$event.target.src='/photos/default.png'" :alt="scope.row.title"  style="width: 100px"/>
+            <img v-else src="/photos/default.png" :alt="scope.row.title"  style="width: 100px"/>
           </template>
         </el-table-column >
         <el-table-column width="120px" prop="category" label="Category" ></el-table-column>

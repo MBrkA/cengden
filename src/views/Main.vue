@@ -14,7 +14,19 @@
             :placeholder="camelCaseToTitleCase(attr.name)"
             style="width:100%;"
         >
+          <div
+              v-if="attr.name === 'brandModels'"
+              v-for="brand in filter['brand']"
+          >
+            <el-option
+                v-for="itemM in attr.value[brand]"
+                :key="itemM"
+                :label="itemM"
+                :value="itemM"
+            />
+          </div>
           <el-option
+              v-else
               v-for="item in attr.value"
               :key="item"
               :label="item"

@@ -14,7 +14,8 @@
 
                   <el-row class="profile-row" style=" border: 0;   display: flex;
                       justify-content: center;width: 20vw;">
-                    <img :src="data['image']" @error="$event.target.src='/photos/default.png'" alt="test"  style="width: 80%"/>
+                    <img v-if="data['image']" :src="data['image']" @error="$event.target.src='/photos/default.png'" alt="test"  style="width: 80%"/>
+                    <img v-else src="/photos/default.png" alt="test"  style="width: 80%"/>
                   </el-row>
                   <el-row class="profile-row" style="width: 20vw;">
                     <el-col class="profile-row-col" style="display: flex;justify-content: center" :span="24">Owner</el-col>

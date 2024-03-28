@@ -154,6 +154,8 @@ function camelCaseToTitleCase(str: string) {
 
 function requiredCheck() {
   for (let i of keys.value) {
+    if (i.name === 'lessons')
+      continue;
     if (i.required && !(form.value as any)[i.name]) {
       showEmptyError.value = true;
       return false;

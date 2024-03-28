@@ -30,7 +30,7 @@ const isLoading = ref(true);
 onMounted(() => {
 
   userService.getAllUsers().then((res) => {
-    data.value = res;
+    data.value = res.filter((user: any) => user.type !== "admin");
     isLoading.value = false;
   }).catch((err) => {
     console.log(err);
