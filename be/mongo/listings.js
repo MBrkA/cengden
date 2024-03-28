@@ -97,7 +97,7 @@ async function sendPriceDownEmail(client, listingId) {
         .find({favorites: {'$in': [listingId]}}).toArray();
     users.forEach(user => {
         sendEmail(user.email, "Price Down",
-            `The price of <a href="https://four95hw1.onrender.com/listing/${listing._id}">${listing.title}</a> has been reduced to ${listing.price}$`);
+            `The price of ${listing.title} has been reduced to ${listing.price}$`);
     })
 }
 
