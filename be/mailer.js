@@ -2,12 +2,12 @@
 var postmark = require("postmark");
 
 // Send an email:
-var client = new postmark.ServerClient("3b2201d6-355b-4abe-a307-88660912b44c");
+var client = new postmark.ServerClient("30f4721b-bc20-4b41-98df-d763ab318b7f");
 
 function sendEmail(to, subject, message) {
     try {
         client.sendEmail({
-            "From": "e239696@metu.edu.tr",
+            "From": "e2396968@ceng.metu.edu.tr",
             "To": to,
             "Subject": subject,
             "HtmlBody": message,
