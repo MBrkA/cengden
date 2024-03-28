@@ -64,7 +64,6 @@ import router from "../router";
 
 const props = defineProps<{
   category?: string;
-  verified?: string;
 }>();
 
 const listingService = useListingService();
@@ -139,10 +138,6 @@ onMounted(() => {
   }).catch((err) => {
     console.log(err);
   });
-})
-
-onBeforeMount(() => {
-  if (props.verified) router.push("verify");
 })
 
 

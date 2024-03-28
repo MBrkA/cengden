@@ -19,7 +19,7 @@ async function getUserById(client, userId) {
 async function createUser(client, newUser) {
     const result = await client.db("495hw1").collection("users").insertOne(newUser);
     sendEmail(newUser.email, "Verification Email",
-        `Click <a href="https://four95hw1.onrender.com/verify/${result.insertedId}">here</a> to verify your email.`
+        `Click <a href="https://four95hw1-be.onrender.com/user/verify/${result.insertedId}">here</a> to verify your email.`
     )
     customLogger(`New user created with the following id: ${result.insertedId}`);
     return result;
